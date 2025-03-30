@@ -21,7 +21,7 @@ if (!mongoURI) {
   process.exit(1);
 }
 
-const connectDB = async () => {
+const db = async () => {
   try {
     await mongoose.connect(mongoURI, {
       useNewUrlParser: true,
@@ -36,4 +36,4 @@ const connectDB = async () => {
   }
 };
 
-export default connectDB();
+export default db();
