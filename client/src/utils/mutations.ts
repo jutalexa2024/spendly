@@ -84,7 +84,6 @@ export const DELETE_SUBSCRIPTION = gql`
 `;
 
 
-
 export const UPDATE_SUBSCRIPTION = gql`
   mutation updateSubscription($subscriptionId: ID!, $name: String, $category: String, $cost: Float, $renewalDate: String) {
     updateSubscription(subscriptionId: $subscriptionId, name: $name, category: $category, cost: $cost, renewalDate: $renewalDate) {
