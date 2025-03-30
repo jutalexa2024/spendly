@@ -25,5 +25,16 @@ export const ADD_USER = gql`
     }
 `;
 
-
-
+export const ADD_BILL = gql`
+  mutation addBill($username: String!, $name: String!, $category: String!, $amount: Float!, $dueDate: String!) {
+    addBill(username: $username, name: $name, category: $category, amount: $amount, dueDate: $dueDate) {
+      _id
+      username
+      name
+      category
+      amount
+      duedate
+      user_id
+    }
+  }
+`;
