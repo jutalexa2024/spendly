@@ -59,3 +59,18 @@ export const UPDATE_BILL = gql`
     }
   }
 `;
+
+
+export const ADD_SUBSCRIPTION = gql`
+  mutation addSubscription($username: String!, $name: String!, $category: String!, $cost: Float!, $renewalDate: String!) {
+    addSubscription(username: $username, name: $name, category: $category, cost: $cost, renewalDate: $renewalDate) {
+      _id
+      username
+      name
+      category
+      cost
+      renewalDate
+      user_id
+    }
+  }
+`;
