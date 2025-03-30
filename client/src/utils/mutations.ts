@@ -46,3 +46,16 @@ export const DELETE_BILL = gql`
     }
   }
 `;
+
+
+export const UPDATE_BILL = gql`
+  mutation updateBill($billId: ID!, $name: String, $category: String, $amount: Float, $dueDate: String) {
+    updateBill(billId: $billId, name: $name, category: $category, amount: $amount, dueDate: $dueDate) {
+      _id
+      name
+      category
+      amount
+      duedate
+    }
+  }
+`;
