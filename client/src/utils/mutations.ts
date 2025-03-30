@@ -38,3 +38,11 @@ export const ADD_BILL = gql`
     }
   }
 `;
+
+export const DELETE_BILL = gql`
+  mutation deleteBill($billId: ID!) {
+    deleteBill(billId: $billId) {
+      _id
+    }
+  }
+`;
