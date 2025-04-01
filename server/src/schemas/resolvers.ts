@@ -1,4 +1,4 @@
-import { User, Bill, Subscription } from '../models/index.js';
+import { User, Bill, Subscription } from '../models/index';
 
 interface AddUserArgs {
   username: string;
