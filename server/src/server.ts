@@ -1,37 +1,44 @@
 import express from 'express';
-import db from './config/connection';
-
-// ApolloServer class
+import http from 'http';
+import connectDB from './config/connection';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
+import { typeDefs, resolvers } from './schemas/index';
 
-//two parts of a GraphQL schema
-import { typeDefs, resolvers } from './schemas/index.js';
-
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-});
-
-// Create a new instance of an Apollo server with the GraphQL schema
 const startApolloServer = async () => {
-
-  await server.start();
-  await db();
-
-  const PORT = process.env.PORT || 3001;
+  await connectDB();
+  
+  
   const app = express();
-
-  app.use(express.urlencoded({ extended: false }));
-  app.use(express.json());
-
-  app.use('/graphql', expressMiddleware(server));
-
-  app.listen(PORT, () => {
-    console.log(`API server running on port ${PORT}!`);
-    console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
+  const httpServer = http.createServer(app);
+  
+  
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
   });
+  
+  
+  await server.start();
+
+  
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
+  
+  
+  app.use('/graphql', 
+    expressMiddleware(server, {
+      context: async ({ req }) => ({ req })
+    }) as unknown as express.RequestHandler
+  );
+
+  
+  const PORT = process.env.PORT || 3001;
+  await new Promise<void>(resolve => httpServer.listen({ port: PORT }, resolve));
+  
+  console.log(`API server running on port ${PORT}!`);
+  console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
 };
 
-// Call the async function to start the server
-startApolloServer();
+
+startApolloServer().catch(err => console.error('Error starting server:', err));
