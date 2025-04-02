@@ -4,15 +4,15 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: white;
+    background: linear-gradient(to right, rgb(0, 211, 118), rgb(0, 140, 233));
     color: black;
   }
   
   .error-container h1 {
-    font-size: 4rem;
+    font-size: 6rem;
     margin-bottom: 1rem;
   }
   
   .error-container p {
-    font-size: 1.2rem;
+    font-size: 2rem;
   }
