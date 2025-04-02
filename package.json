@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@types/jwt-decode": "^2.2.1",
+    "bcrypt": "^5.1.1",
     "jwt-decode": "^4.0.0"
   }
 }
