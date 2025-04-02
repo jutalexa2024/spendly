@@ -1,0 +1,42 @@
+.subscription-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 50%;
+    margin: 0 auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: #e5e5e5; /* Light background for the header */
+    border-radius: 4px;
+    font-weight: bold;
+  }
+  
+  .subscription-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
+  }
+  
+  .subscription-name {
+    font-weight: normal;
+  }
+  
+  .subscription-cost {
+    color: green;
+  }
+
+  .subscription-header-name,
+  .subscription-header-cost {
+  font-size: 1.1rem;
+}
