@@ -16,7 +16,6 @@ interface User {
   password: string;
 }
 
-
 interface UserArgs {
   _id: number;
 }
@@ -48,7 +47,16 @@ const resolvers = {
       return await User.findOne({ user_id: _id });
     },
     subscriptions: async () => await Subscription.find(),
-
+    
+    userBills: async (_parent: unknown, { username }: { username: string }) => {
+      return await Bill.find({ username });
+    },
+    bill: async (_parent: unknown, { id }: { id: string }) => {
+      return await Bill.findById(id);
+    },
+    subscription: async (_parent: unknown, { id }: { id: string }) => {
+      return await Subscription.findById(id);
+    },
     me: async (_parent: unknown, _args: unknown, context: Context): Promise<User | null> => {
       if (context.user) {
         // If user is authenticated, return their profile
@@ -58,6 +66,7 @@ const resolvers = {
       throw new AuthenticationError('Not Authenticated');
     },
   },
+
   Mutation: {
     addUser: async (_parent: any, { input }: AddUserArgs) => {
       const user = await User.create({ ...input });
@@ -82,16 +91,14 @@ const resolvers = {
       const user = await User.findOne({ email });
 
       if (!user) {
-        // If profile with provided email doesn't exist, throw an authentication error
-        throw AuthenticationError;
+        throw new AuthenticationError('Invalid credentials, No Email Exists');
       }
 
       // Check if the provided password is correct
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
-        // If password is incorrect, throw an authentication error
-        throw new AuthenticationError('Not Authenticated');
+        throw new AuthenticationError('Invalid credentials, Incorrect Password');
       }
 
       // Sign a JWT token for the authenticated profile
@@ -102,4 +109,3 @@ const resolvers = {
 };
 
 export default resolvers;
-
