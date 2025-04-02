@@ -2,9 +2,11 @@ import { User, Bill, Subscription } from '../models/index';
 import { signToken, AuthenticationError } from '../utils/auth.js';
 
 interface AddUserArgs {
-  username: string;
-  email: string;
-  password: string;
+  input:{
+    username: string;
+    email: string;
+    password: string;
+  }
 }
 
 interface User {
@@ -57,10 +59,12 @@ const resolvers = {
     },
   },
   Mutation: {
-    addUser: async (_: any, { username, email, password }: AddUserArgs) => {
-      const user = new User({ username, email, password });
-      await user.save();
-      return user;
+    addUser: async (_parent: any, { input }: AddUserArgs) => {
+      const user = await User.create({ ...input });
+    
+      const token = signToken(user.username, user.email, user._id);
+    
+      return { token, user };
     },
     addBill: async (_: any, { username, category, name, amount, dueDate }: AddBillArgs) => {
       const bill = new Bill({ username, category, name, amount, dueDate });

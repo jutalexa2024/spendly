@@ -23,6 +23,15 @@ UserSchema.methods.isCorrectPassword = async function (password: string): Promis
   return bcrypt.compare(password, this.password);
 };
 
+UserSchema.pre<IUser>('save', async function (next) {
+  if (this.isNew || this.isModified('password')) {
+    const saltRounds = 10;
+    this.password = await bcrypt.hash(this.password, saltRounds);
+  }
+
+  next();
+});
+
 const User = model<IUser>('User', UserSchema);
 
 export default User;

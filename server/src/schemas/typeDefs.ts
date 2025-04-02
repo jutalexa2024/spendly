@@ -26,6 +26,30 @@ const typeDefs = `
     renewalDate: String
   }
 
+  input AddSubscriptionInput {
+  username: String!
+  cost: Float!
+  renewalDate: String!
+}
+
+input AddBillInput {
+  username: String!
+  category: String!
+  name: String!
+  amount: Float!
+  dueDate: String!
+}
+
+  input UserInput {
+    name: String!
+    email: String!
+    password: String!
+  }
+
+  type Auth {
+    token: ID!
+    user: User
+  }
 
   type Query {
   users: [User]
@@ -35,7 +59,8 @@ const typeDefs = `
 
 
   type Mutation {
-    addUser(username: String!, email: String!, password: String!): User
+    addUser(input: UserInput!): Auth
+    login(email: String!, password: String!): Auth
     addBill(username: String!, category: String!, name: String!, amount: Float!, dueDate: String!): Bill
     addSubscription(username: String!, cost: Float!, renewalDate: String!): Subscription
   }
