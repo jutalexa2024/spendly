@@ -55,7 +55,14 @@ input AddBillInput {
   users: [User]
   bills: [Bill]
   subscriptions: [Subscription]
+  userBills(username: String!): [Bill]
+  user(id: ID!): User
+  bill(id: ID!): Bill
+  subscription(id: ID!): Subscription
+  me: User
   }
+
+  ## delete bills/subscriptions
 
 
   type Mutation {
