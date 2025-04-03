@@ -7,7 +7,7 @@ import './index.css'
 // import Dashboard from './pages/Dashboard.tsx';
 import LoginPage from './pages/Login';
 // import SignUpPage from './pages/Signup.tsx';
-// import Subscription from './pages/Subscription.tsx';
+import Subscription from './pages/Subscription';
 // import UserPreference from './pages/UserPreferences.tsx'
 import App from './App';
 // import HomePage from './pages/Home';
@@ -20,10 +20,10 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
-    //   {
-    //     path: "/",
-    //     element: <HomePage />,
-    //   },
+      // {
+      //   path: "/",
+      //   element: <HomePage />,
+      // },
     //   {
     //     path: "/about",
     //     element: <AboutPage />,
@@ -40,10 +40,10 @@ const router = createBrowserRouter([
     //     path: "/signup",
     //     element: <SignUpPage />,
     //   },
-    //   {
-    //     path: "/subscription",
-    //     element: <Subscription />,
-    //   },
+      {
+        path: "/subscription",
+        element: <Subscription />,
+      },
     //   {
     //     path: "/bills",
     //     element: <Billpage />,
@@ -53,6 +53,7 @@ const router = createBrowserRouter([
     //     element: <UserPreference />,
     //   },
       
+
     ],
   },
 ]);

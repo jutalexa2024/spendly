@@ -39,7 +39,7 @@
     color: white;
     border: none;
     padding: 10px;
-    width: auto;
+    width: 50%;
     border-radius: 4px;
     font-size: 1.2rem;
     cursor: pointer;
@@ -47,4 +47,14 @@
   
   .login-form button:hover {
     background: rgb(0, 120, 200);
+  }
+
+  .error-message {
+    color: red;
+    background-color: #ffdddd;
+    padding: 0.5rem;
+    border: 1px solid red;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    text-align: left;
   }
