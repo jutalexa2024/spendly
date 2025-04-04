@@ -10,7 +10,7 @@ import LoginPage from './pages/Login';
 import Subscription from './pages/Subscription';
 // import UserPreference from './pages/UserPreferences.tsx'
 import App from './App';
-// import HomePage from './pages/Home';
+import HomePage from './pages/Home';
 import ErrorPage from './pages/ErrorPage';
 
 
@@ -20,10 +20,10 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
-      // {
-      //   path: "/",
-      //   element: <HomePage />,
-      // },
+      {
+        path: "/",
+        element: <HomePage />,
+      },
       // {
       //   path: "/about",
       //   element: <AboutPage />,
