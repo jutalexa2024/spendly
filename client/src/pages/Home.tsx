@@ -1,14 +1,11 @@
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+
 
 const Home = () => {
+    const navigate = useNavigate();   
   return (
     <div>
-        <nav>
-            <div className="logo">
-                <h1>Spendly</h1>
-                <img src="/Spendly Logo.png" alt="Spendly logo" />
-            </div>
-        </nav>
     <header>
       <h2>Welcome to Spendly</h2>
       <p>
