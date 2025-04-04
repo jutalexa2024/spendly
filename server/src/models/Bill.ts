@@ -1,17 +1,17 @@
 import { Schema, model, Document } from 'mongoose';
 import User from './User';
 
-export interface IBills extends Document {
+export interface IBill extends Document {
     bill_id: number;
     username: string;
     name: string;
     category: string;
     amount: number;
-    duedate: Date;
+    dueDate: Date;
     user_id: Schema.Types.ObjectId;
   }
   
-const billSchema = new Schema<IBills>(
+const billSchema = new Schema<IBill>(
   {
     username: {
       type: String,
@@ -31,7 +31,7 @@ const billSchema = new Schema<IBills>(
       type: Number,
       required: true,
     },
-    duedate: {
+    dueDate: {
         type: Date,
         required: true,
     },
@@ -53,6 +53,6 @@ const billSchema = new Schema<IBills>(
   }
 );
 
-const Bills = model<IBills>('Bills', billSchema);
+const Bill = model<IBill>('Bills', billSchema);
 
-export default Bills;
+export default Bill;

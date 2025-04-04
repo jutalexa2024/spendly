@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const typeDefs = `
   # Define which fields are accessible from the Class model
   type User {
@@ -72,7 +74,4 @@ input AddBillInput {
     addSubscription(username: String!, cost: Float!, renewalDate: String!): Subscription
   }
 `;
-
-
-
-export default typeDefs;
+exports.default = typeDefs;
