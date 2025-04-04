@@ -23,7 +23,7 @@ const Home = () => {
       </div>
       <div className="right-column">
         <img src="https://via.placeholder.com/400" alt="Placeholder" />
-        <img src="https://via.placeholder.com/150" alt="Placeholder" />
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://spendly.app" alt="Placeholder" />
         <p>Download This App</p>
         <button onClick={() => console.log('App Store button clicked')}>
           <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store" />
