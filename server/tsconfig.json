@@ -18,6 +18,7 @@
     /* Type Checking */
     "strict": true,
     "noUnusedLocals": true,
+    "types": ["node"],
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "exactOptionalPropertyTypes": true /* Interpret optional property types as written, rather than adding 'undefined'. */,
