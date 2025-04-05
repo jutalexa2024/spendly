@@ -38,8 +38,8 @@ const startApolloServer = () => __awaiter(void 0, void 0, void 0, function* () {
         }),
     }));
     const PORT = process.env.PORT || 3001;
-    yield new Promise(resolve => httpServer.listen({ port: PORT }, resolve));
+    yield new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));
     console.log(`API server running on port ${PORT}!`);
     console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
 });
-startApolloServer().catch(err => console.error('Error starting server:', err));
+startApolloServer().catch((err) => console.error('Error starting server:', err));
