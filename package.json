@@ -19,6 +19,7 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/mongoose": "^5.11.96",
     "@types/node": "^22.14.0",
+    "concurrently": "^9.1.2",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
@@ -26,6 +27,6 @@
   "scripts": {
     "dev": "nodemon --exec ts-node src/server.ts",
     "start": "node server/server.js",
-    "build": "tsc"
+    "build": "concurrently \"cd server && npm run build\" \"cd client && npm run build\""
   }
 }
