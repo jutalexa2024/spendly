@@ -1,12 +1,12 @@
 import express from 'express';
 import http from 'http';
-import connectDB from './config/connection';
+import connectDB from './config/connection.js';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 
-import { typeDefs, resolvers } from './schemas/index';
-import { User, Bill, Subscription } from './models';
-import { authenticateToken } from './utils/auth';
+import { typeDefs, resolvers } from './schemas/index.js';
+import { User, Bill, Subscription } from './models/index.js';
+import { authenticateToken } from './utils/auth.js';
 
 const startApolloServer = async () => {
   await connectDB();
