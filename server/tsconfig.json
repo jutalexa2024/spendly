@@ -26,7 +26,6 @@
     "useUnknownInCatchVariables": true
   },
   "include": ["src/**/*"],  // Only include source files
-  "exclude": ["node_modules"],  // Exclude node_modules from being included
   "typeRoots": [
     "./node_modules/@types",
   ]
