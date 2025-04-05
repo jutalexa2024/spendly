@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "dotenv": "^16.4.7",
+    "dotenv-extended": "^2.9.0",
     "mongoose": "^8.13.2"
   }
 }
