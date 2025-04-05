@@ -19,7 +19,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^22.14.0",
     "concurrently": "^8.2.2",
     "wait-on": "^7.2.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "mongoose": "^8.13.2"
   }
 }

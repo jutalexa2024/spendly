@@ -21,6 +21,7 @@
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
 
     /* Type Checking */
+    "types": ["node"],
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -31,6 +32,5 @@
     "useUnknownInCatchVariables": true /* Ensure 'unknown' is used for catch clause variables. */
   },
   "include": ["src"],
-  "typeRoots": ["./node_modules/@types", "./src/types"]
 
 }
