@@ -2,7 +2,7 @@ import express from 'express';
 import http from 'http';
 import connectDB from './config/connection';
 import { ApolloServer } from '@apollo/server';
-import { expressMiddleware, ExpressContextFunctionArgument } from '@apollo/server/express4';
+import { expressMiddleware } from '@apollo/server/express4';
 
 import { typeDefs, resolvers } from './schemas/index';
 import { User, Bill, Subscription } from './models';
