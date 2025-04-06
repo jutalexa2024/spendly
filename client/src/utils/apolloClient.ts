@@ -16,3 +16,8 @@ const httpLink = createHttpLink({
       );
     if (networkError) console.error(`[Network error]: ${networkError}`);
   });
+
+
+  const authLink = setContext((_, { headers }) => {
+    
+    const token = localStorage.getItem('id_token');
