@@ -1,6 +1,7 @@
-import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import './index.css'
+import ReactDOM from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { ChakraProvider } from "@chakra-ui/react";
+import './index.css';
 
 // import AboutPage from './pages/About.tsx'
 // import Billpage from './pages/Bills.tsx';
@@ -61,6 +62,8 @@ const router = createBrowserRouter([
 const rootElement = document.getElementById('root');
 if(rootElement) {
   ReactDOM.createRoot(rootElement).render(
-    <RouterProvider router={router} />
+    <ChakraProvider>
+      <RouterProvider router={router} />
+    </ChakraProvider>
   );
 }
