@@ -25,7 +25,7 @@
     "noImplicitOverride": true,
     "useUnknownInCatchVariables": true
   },
-  "include": ["src/**/*", "tsconfig.json"],  // Only include source files
+  "include": ["src"],  // Only include source files
   "typeRoots": [
     "./node_modules/@types",
   ]
