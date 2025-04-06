@@ -38,3 +38,4 @@ const httpLink = createHttpLink({
       });
       
 
+      export default client;
