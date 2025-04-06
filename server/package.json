@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx tsc",
+    "build": "tsc",
     "start": "npm run build && node ./dist/server.js --ignore client",
     "dev": "nodemon server.js"
   },
