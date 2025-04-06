@@ -119,3 +119,28 @@ const ADD_SUBSCRIPTION = gql`
     }
   }
 `;
+
+
+export const useLogin = () => {
+    const [loginMutation, { loading, error }] = useMutation(LOGIN_USER);
+    
+    const login = async (email: string, password: string) => {
+      try {
+        const { data } = await loginMutation({
+          variables: { email, password }
+        });
+        
+        const { token, user } = data.login;
+        authService.login(token);
+        
+        return { success: true, user };
+      } catch (err) {
+        console.error('Login error:', err);
+        return { success: false, error: err };
+      }
+    };
+    
+    return { login, loading, error };
+  };
+
+  
