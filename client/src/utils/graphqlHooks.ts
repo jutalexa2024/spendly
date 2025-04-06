@@ -16,3 +16,106 @@ const LOGIN_USER = gql`
     }
   }
 `;
+
+const ADD_USER = gql`
+  mutation AddUser($input: UserInput!) {
+    addUser(input: $input) {
+      token
+      user {
+        _id
+        username
+        email
+      }
+    }
+  }
+`;
+
+const GET_ME = gql`
+  query Me {
+    me {
+      _id
+      username
+      email
+    }
+  }
+`;
+
+const GET_BILLS = gql`
+  query GetBills {
+    bills {
+      _id
+      username
+      name
+      category
+      amount
+      dueDate
+    }
+  }
+`;
+
+const GET_USER_BILLS = gql`
+  query GetUserBills($username: String!) {
+    userBills(username: $username) {
+      _id
+      name
+      category
+      amount
+      dueDate
+    }
+  }
+`;
+
+const GET_SUBSCRIPTIONS = gql`
+  query GetSubscriptions {
+    subscriptions {
+      _id
+      username
+      cost
+      renewalDate
+    }
+  }
+`;
+
+const ADD_BILL = gql`
+  mutation AddBill(
+    $username: String!
+    $category: String!
+    $name: String!
+    $amount: Float!
+    $dueDate: String!
+  ) {
+    addBill(
+      username: $username
+      category: $category
+      name: $name
+      amount: $amount
+      dueDate: $dueDate
+    ) {
+      _id
+      username
+      name
+      category
+      amount
+      dueDate
+    }
+  }
+`;
+
+const ADD_SUBSCRIPTION = gql`
+  mutation AddSubscription(
+    $username: String!
+    $cost: Float!
+    $renewalDate: String!
+  ) {
+    addSubscription(
+      username: $username
+      cost: $cost
+      renewalDate: $renewalDate
+    ) {
+      _id
+      username
+      cost
+      renewalDate
+    }
+  }
+`;
