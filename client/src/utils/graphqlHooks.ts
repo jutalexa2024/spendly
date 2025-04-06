@@ -143,4 +143,132 @@ export const useLogin = () => {
     return { login, loading, error };
   };
 
+export const useSignup = () => {
+    const [addUserMutation, { loading, error }] = useMutation(ADD_USER);
+    
+    const signup = async (username: string, email: string, password: string) => {
+      try {
+        const { data } = await addUserMutation({
+          variables: { 
+            input: { 
+              name: username, 
+              email, 
+              password 
+            } 
+          }
+        });
+        
+        const { token, user } = data.addUser;
+        authService.login(token);
+        
+        return { success: true, user };
+      } catch (err) {
+        console.error('Signup error:', err);
+        return { success: false, error: err };
+      }
+    };
+    
+    return { signup, loading, error };
+  };
+
+
   
+export const useCurrentUser = () => {
+    return useQuery(GET_ME, {
+      fetchPolicy: 'cache-and-network',
+      skip: !authService.loggedIn()
+    });
+  };
+  
+  
+  export const useBills = () => {
+    return useQuery(GET_BILLS);
+  };
+  
+  
+  export const useUserBills = (username: string) => {
+    return useQuery(GET_USER_BILLS, {
+      variables: { username },
+      skip: !username
+    });
+  };
+  
+  
+  export const useSubscriptions = () => {
+    return useQuery(GET_SUBSCRIPTIONS);
+  };
+  
+  
+  export const useAddBill = () => {
+    const [addBillMutation, { loading, error }] = useMutation(ADD_BILL);
+    
+    const addBill = async (
+      username: string, 
+      category: string, 
+      name: string, 
+      amount: number, 
+      dueDate: string
+    ) => {
+      try {
+        const { data } = await addBillMutation({
+          variables: { 
+            username, 
+            category, 
+            name, 
+            amount, 
+            dueDate 
+          },
+          refetchQueries: [
+            { query: GET_BILLS },
+            { 
+              query: GET_USER_BILLS, 
+              variables: { username } 
+            }
+          ]
+        });
+        
+        return { success: true, bill: data.addBill };
+      } catch (err) {
+        console.error('Add bill error:', err);
+        return { success: false, error: err };
+      }
+    };
+    
+    return { addBill, loading, error };
+  };
+  
+  
+  export const useAddSubscription = () => {
+    const [addSubscriptionMutation, { loading, error }] = useMutation(ADD_SUBSCRIPTION);
+    
+    const addSubscription = async (
+      username: string, 
+      cost: number, 
+      renewalDate: string
+    ) => {
+      try {
+        const { data } = await addSubscriptionMutation({
+          variables: { 
+            username, 
+            cost, 
+            renewalDate 
+          },
+          refetchQueries: [
+            { query: GET_SUBSCRIPTIONS }
+          ]
+        });
+        
+        return { success: true, subscription: data.addSubscription };
+      } catch (err) {
+        console.error('Add subscription error:', err);
+        return { success: false, error: err };
+      }
+    };
+    
+    return { addSubscription, loading, error };
+  };
+
+
+
+
+
