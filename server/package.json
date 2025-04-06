@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
+    "build": "build",
     "start": "npm run build && node ./dist/server.js --ignore client",
     "dev": "nodemon server.js"
   },
@@ -24,6 +24,12 @@
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.9",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^5.0.0",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^22.13.4",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2"
   }
 }
