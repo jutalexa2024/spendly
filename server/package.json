@@ -20,7 +20,8 @@
     "graphql": "^16.10.0",
     "http": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.13.2"
+    "mongoose": "^8.13.2",
+    "typescript": "^5.8.3"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.9"
