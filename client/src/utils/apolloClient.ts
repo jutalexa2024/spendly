@@ -30,3 +30,11 @@ const httpLink = createHttpLink({
         }
       };
     });
+
+
+    const client = new ApolloClient({
+        link: from([errorLink, authLink, httpLink]),
+        cache: new InMemoryCache(),
+      });
+      
+
