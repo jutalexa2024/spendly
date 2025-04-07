@@ -1,0 +1,92 @@
+.bills-page {
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.card-container {
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.upcoming-bills-list,
+.payment-history-table,
+.subscriptions-table {
+  width: 70%;
+}
+
+.upcoming-bill-item {
+  margin-bottom: 0.5rem;
+}
+
+
+.history-table-header {
+  display: grid;
+  grid-template-columns: 1.3fr 1.6fr 1.9fr 1.9fr 1fr; /* Adjust for new columns */
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+    
+    /* justify-content: space-between; */
+    /* padding: 14px 20px; */
+    background: linear-gradient(to right, #3498db, #94c9eb);
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    margin-bottom: 16px;
+  }
+  
+  .history-header-date,
+  .history-header-description,
+  .history-header-amount,
+  .history-date,
+  .history-description,
+  .history-amount {
+    flex: 1;
+    text-align: left;
+  }
+  
+  .history-row {
+    display: grid;
+    grid-template-columns: 1.3fr 1.6fr 1.9fr 1.9fr 1fr; /* Adjust for new columns */
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    
+    align-items: center;
+    
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+
+.paid-btn {
+  background-color: #4caf50;
+  color: white;
+}
+
+.mark-unpaid-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.no-upcoming-bills {
+  color: #777;
+}
