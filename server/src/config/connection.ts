@@ -1,13 +1,3 @@
-// import mongoose from 'mongoose';
-
-// const mongoURI = process.env.MONGODB_URI || "";
-
-// // Wrap Mongoose around local connection to MongoDB
-// mongoose.connect(mongoURI);
-
-// // Export connection
-// export default mongoose.connection;
-
 
 import dotenv from "dotenv";
 import mongoose from "mongoose";
@@ -21,19 +11,15 @@ if (!mongoURI) {
   process.exit(1);
 }
 
-const db = async () => {
+const connectDB = async () => {
   try {
-    await mongoose.connect(mongoURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    } as mongoose.ConnectOptions);
-
+    await mongoose.connect(mongoURI);
     console.log("✅ MongoDB connection successful!");
+    return mongoose.connection;
   } catch (error) {
     console.error("❌ MongoDB connection failed:", error);
-  } finally {
-    mongoose.connection.close(); // Close the connection after testing
+    process.exit(1);
   }
 };
 
-export default db();
+export default connectDB;

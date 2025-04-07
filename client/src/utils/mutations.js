@@ -1,7 +1,5 @@
 import { gql } from '@apollo/client';
-
-
-export const QUERY_USERS = gql`
+export const QUERY_USERS = gql `
   query getUsers {
     users {
       _id
@@ -10,9 +8,7 @@ export const QUERY_USERS = gql`
     }
   }
 `;
-
-
-export const QUERY_BILLS = gql`
+export const QUERY_BILLS = gql `
   query getBills {
     bills {
       _id
@@ -24,9 +20,7 @@ export const QUERY_BILLS = gql`
     }
   }
 `;
-
-
-export const QUERY_SUBSCRIPTIONS = gql`
+export const QUERY_SUBSCRIPTIONS = gql `
   query getSubscriptions {
     subscriptions {
       _id
@@ -36,8 +30,7 @@ export const QUERY_SUBSCRIPTIONS = gql`
     }
   }
 `;
-
-export const QUERY_USER = gql`
+export const QUERY_USER = gql `
   query getUser($id: ID!) {
     user(id: $id) {
       _id
@@ -46,8 +39,7 @@ export const QUERY_USER = gql`
     }
   }
 `;
-
-export const QUERY_BILL = gql`
+export const QUERY_BILL = gql `
   query getBill($id: ID!) {
     bill(id: $id) {
       _id
@@ -59,8 +51,7 @@ export const QUERY_BILL = gql`
     }
   }
 `;
-
-export const QUERY_SUBSCRIPTION = gql`
+export const QUERY_SUBSCRIPTION = gql `
   query getSubscription($id: ID!) {
     subscription(id: $id) {
       _id
@@ -70,8 +61,7 @@ export const QUERY_SUBSCRIPTION = gql`
     }
   }
 `;
-
-export const QUERY_ME = gql`
+export const QUERY_ME = gql `
   query me {
     me {
       _id
@@ -80,9 +70,7 @@ export const QUERY_ME = gql`
     }
   }
 `;
-
-
-export const QUERY_USER_BILLS = gql`
+export const QUERY_USER_BILLS = gql `
   query getUserBills($username: String!) {
     userBills(username: $username) {
       _id
@@ -93,4 +81,3 @@ export const QUERY_USER_BILLS = gql`
     }
   }
 `;
-
