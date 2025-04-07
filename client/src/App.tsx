@@ -1,6 +1,7 @@
-import {Outlet } from "react-router-dom";
-import Header from "./components/header/index";
 
+import { Outlet } from "react-router-dom";
+import Header from "./components/header/index";
+        
 function App() {
   return (
     <div>
