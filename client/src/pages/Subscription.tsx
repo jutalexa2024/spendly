@@ -24,18 +24,20 @@ type Subscription = {
     status: "Active" | "Inactive";
     cycle: "Monthly" | "Annually";
     cost: number;
-  };
+    paymentStatus: "Paid" | "Unpaid"
+    dueDate: string;
+  }; 
 
 const SubscriptionPage = () => {
   
   // Mock data to populate Subscription table
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([
-    { name: "Netflix", status: "Active", cycle: "Monthly", cost: 15.99, },
-    { name: "Spotify", status: "Inactive", cycle: "Monthly", cost: 9.99 },
-    { name: "Hulu", status: "Active", cycle: "Monthly", cost: 9.99 },
-    { name: "Microsoft 365", status: "Active", cycle: "Annually", cost: 99.99 },
-    { name: "Amazon Prime", status: "Active", cycle: "Annually", cost: 100.00},
-    { name: "HBO Max", status: "Inactive", cycle: "Monthly", cost: 15.99 },
+    { name: "Netflix", status: "Active", cycle: "Monthly", cost: 15.99, paymentStatus: "Unpaid", dueDate: "2025-04-15"},
+    { name: "Spotify", status: "Inactive", cycle: "Monthly", cost: 9.99, paymentStatus: "Unpaid", dueDate: "2025-04-10" },
+    { name: "Hulu", status: "Active", cycle: "Monthly", cost: 9.99, paymentStatus: "Unpaid", dueDate: "2025-04-20" },
+    { name: "Microsoft 365", status: "Active", cycle: "Annually", cost: 99.99, paymentStatus: "Unpaid", dueDate: "2025-06-01" },
+    { name: "Amazon Prime", status: "Active", cycle: "Annually", cost: 100.00, paymentStatus: "Unpaid", dueDate: "2025-07-06"},
+    { name: "HBO Max", status: "Inactive", cycle: "Monthly", cost: 15.99, paymentStatus: "Unpaid", dueDate: "2025-04-18" },
   ]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -47,7 +49,9 @@ const SubscriptionPage = () => {
     name: "",
     status: "Active",
     cycle: "Monthly",
-    cost: 0.00
+    cost: 0.00,
+    paymentStatus: "Unpaid",
+    dueDate: "",
   });
 
   // This is setting a state variable for Editing (information held) Subscription
@@ -55,7 +59,9 @@ const SubscriptionPage = () => {
     name: "",
     status: "Active",
     cycle: "Monthly",
-    cost: 0.00 
+    cost: 0.00, 
+    paymentStatus: "Unpaid",
+    dueDate: "",
   });
   
   // Error messages for when user add a new subscription or edit it.
@@ -165,7 +171,7 @@ const SubscriptionPage = () => {
 
     setErrorMessage(""); // Clear error message if input is valid
     setSubscriptions([...subscriptions, newSubscription]); // Add new subscription to the state
-    setNewSubscription({ name: "", status: "Active", cycle: "Monthly", cost: 0 }); // Reset the form
+    setNewSubscription({ name: "", status: "Active", cycle: "Monthly", cost: 0.00, paymentStatus: "Unpaid", dueDate: new Date().toISOString().split("T")[0] }); // Reset the form
     onClose(); // Close the modal window
   };
 
