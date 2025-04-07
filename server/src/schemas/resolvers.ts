@@ -1,5 +1,5 @@
-import { User, Bill, Subscription } from '../models/index';
-import { signToken, AuthenticationError } from '../utils/auth';
+import { User, Bill, Subscription } from '../models/index.js';
+import { signToken, AuthenticationError } from '../utils/auth.js';
 
 interface AddUserArgs {
   input:{

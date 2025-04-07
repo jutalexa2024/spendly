@@ -1,13 +1,3 @@
-// import mongoose from 'mongoose';
-
-// const mongoURI = process.env.MONGODB_URI || "";
-
-// // Wrap Mongoose around local connection to MongoDB
-// mongoose.connect(mongoURI);
-
-// // Export connection
-// export default mongoose.connection;
-
 
 import dotenv from "dotenv";
 import mongoose from "mongoose";
