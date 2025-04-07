@@ -4,7 +4,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import './index.css';
 
 // import AboutPage from './pages/About.tsx'
-// import Billpage from './pages/Bills.tsx';
+import BillsPage from './pages/Bills';
 // import Dashboard from './pages/Dashboard.tsx';
 import LoginPage from './pages/Login';
 // import SignUpPage from './pages/Signup.tsx';
@@ -45,16 +45,15 @@ const router = createBrowserRouter([
         path: "/subscription",
         element: <Subscription />,
       },
-    //   {
-    //     path: "/bills",
-    //     element: <Billpage />,
-    //   },
+      {
+        path: "/bills",
+        element: <BillsPage />,
+      },
     //   {
     //     path: "/usersettings",
     //     element: <UserPreference />,
-    //   },
+    //   }, 
       
-
     ],
   },
 ]);
