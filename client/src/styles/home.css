@@ -1,14 +1,21 @@
+body {
+    background-color: #fff;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
 .home-main {
   background: linear-gradient(to right, #00C96D, #0077ff);
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 20px;
+  padding: 20px 100px;
   gap: 20px;
-  width: 100%;
+  width: 90%;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 40px auto;
   font-size: 1.2rem;
   font-family: Arial, sans-serif;
   background-color: #f9f9f9;
