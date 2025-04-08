@@ -35,4 +35,14 @@
   .nav-links a:hover {
     text-decoration: underline;
   }
+
+  .footer {
+    background: linear-gradient(to right, #00C96D, #0077ff);
+    color: black;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+  }
   
