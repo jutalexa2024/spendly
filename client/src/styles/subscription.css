@@ -1,42 +1,125 @@
-.subscription-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 50%;
-    margin: 0 auto;
-    padding: 20px;
-    background: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .table-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background: #e5e5e5; /* Light background for the header */
-    border-radius: 4px;
-    font-weight: bold;
-  }
-  
-  .subscription-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background: white;
-    border-radius: 4px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
-  }
-  
-  .subscription-name {
-    font-weight: normal;
-  }
-  
-  .subscription-cost {
-    color: green;
-  }
+.page-title {
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 4rem; /* Add spacing below the title */
+  color: #333; /* Set a dark color for readability */
+}
 
-  .subscription-header-name,
-  .subscription-header-cost {
-  font-size: 1.1rem;
+.add-button-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 60%;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+}
+
+.subscription-add-btn {
+  background: rgb(0, 140, 233);
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.subscription-add-btn:hover {
+  background: #2ecc71;
+}
+
+.subscription-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 60%;
+  margin: 0 auto;
+  padding: 30px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 1.3fr 1.6fr 1.9fr 1.9fr 1fr; /* Adjust for new columns */
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+}
+
+.subscription-row {
+  display: grid;
+  grid-template-columns: 1.8fr 1.45fr 1.9fr 1.25fr 0.8fr; /* Adjust for new columns */
+  align-items: center;
+  justify-items: start;
+  text-align: center;
+  padding: 0.8rem;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
+  font-weight: normal;
+}
+
+.table-header {
+  background: linear-gradient(to right, #2ecc71, #3498db);
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.no-subscriptions-message {
+  font-size: 1.2rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+.subscription-name {
+  text-align: left;
+}
+.subscription-status,
+.subscription-cycle,
+.subscription-cost {
+  text-align: center;
+}
+
+.subscription-header-name {
+  text-align: left;
+}
+.subscription-header-status,
+.subscription-header-cycle,
+.subscription-header-cost {
+  text-align: center;
+}
+
+.subscription-edit-btn {
+  background: rgb(0, 140, 233);
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.subscription-edit-btn:hover {
+  background: #2ecc71;
+}
+
+/* Styles for Active Status */
+.status-active {
+  color: green;
+  border: 2px solid green;
+  padding: 2px 3px; /* Optional padding for better appearance */
+  border-radius: 4px;
+  display: inline; /* Ensures the border surrounds the text */
+}
+
+/* Styles for Inactive Status */
+.status-inactive {
+  color: gray;
+  border: 2px solid gray;
+  padding: 2px 3px; /* Optional padding for better appearance */
+  border-radius: 4px;
+  display: inline; /* Ensures the border surrounds the text */
 }
