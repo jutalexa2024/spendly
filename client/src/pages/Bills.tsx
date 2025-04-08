@@ -51,12 +51,24 @@ const BillsPage: React.FC = () => {
   const paymentHistory = [
     {
       name: "Netflix",
-      dueDate: "03/15/2025",
-      paidDate: "03/15/2025",
+      dueDate: "03/14/2025",
+      paidDate: "03/14/2025",
       paymentAmount: 15.99,
     },
     {
       name: "Spotify",
+      dueDate: "03/10/2025",
+      paidDate: "03/11/2025",
+      paymentAmount: 9.99,
+    },
+    {
+      name: "Apple Music",
+      dueDate: "12/14/2024",
+      paidDate: "12/14/2024",
+      paymentAmount: 12.00,
+    },
+    {
+      name: "Disney Plus",
       dueDate: "03/10/2025",
       paidDate: "03/11/2025",
       paymentAmount: 9.99,
@@ -68,105 +80,113 @@ const BillsPage: React.FC = () => {
       <h1 className="page-title">My Bills</h1>
 
       {/* Upcoming Bills */}
-      <div className="card-container">
-        <h2 className="card-title">Upcoming Bills (Next 2 Weeks)</h2>
+      <div className="upcoming-bills-card-container">
+        <h2 className="upcoming-bills-card-title">
+          Upcoming Bills (Next 2 Weeks)
+        </h2>
         {upcomingBills.length === 0 ? (
           <p className="no-upcoming-bills">
             No upcoming bills within two weeks.
           </p>
         ) : (
-          <ul className="upcoming-bills-list">
+          <div className="upcoming-bills-list">
             {upcomingBills.map((bill, index) => (
-              <li key={index} className="upcoming-bill-item">
-                <span>{bill.name}</span> - Due: <span>{bill.dueDate}</span> - $
-                <span>{bill.paymentDue}</span>
-              </li>
+              <div key={index} className="upcoming-bill-item">
+                <div className="upcoming-bill-info">
+                  <div className="upcoming-bill-name">{bill.name}</div>
+                  <div className="upcoming-bill-due-date">
+                    Due Date: {bill.dueDate}
+                  </div>
+                </div>
+                <div className="upcoming-bill-amount-due">
+                  ${bill.paymentDue}
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </div>
 
       {/* Subscriptions Table */}
-      <div className="card-container">
-        <h2 className="card-title">Subscription Bills</h2>
-        <table className="subscriptions-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Due Date</th>
-              <th>Past Due</th>
-              <th>Amount ($)</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {activeSubscriptions.map((sub, index) => {
-              const dueDate = new Date(sub.dueDate);
-              const isPastDue = dueDate < new Date();
-              return (
-                <tr key={index}>
-                  <td>{sub.name}</td>
-                  <td>
-                    {dueDate.toLocaleDateString("en-US", {
-                      month: "2-digit",
-                      day: "2-digit",
-                      year: "numeric",
-                    })}
-                  </td>
-                  <td>{isPastDue ? "Yes" : "No"}</td>
-                  <td>${sub.cost.toFixed(2)}</td>
-                  <td>{sub.paymentStatus}</td>
-                  <td>
-                    <button
-                      className="paid-btn"
-                      onClick={() =>
-                        setSubscriptions((prev) =>
-                          prev.map((s) =>
-                            s.name === sub.name
-                              ? { ...s, paymentStatus: "Paid" }
-                              : s
-                          )
-                        )
-                      }
-                    >
-                      Paid
-                    </button>
-                    <button
-                      className="mark-unpaid-btn"
-                      onClick={() =>
-                        setSubscriptions((prev) =>
-                          prev.map((s) =>
-                            s.name === sub.name
-                              ? { ...s, paymentStatus: "Unpaid" }
-                              : s
-                          )
-                        )
-                      }
-                    >
-                      Unpaid
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-            <tr>
-              <td colSpan={3}>Total (Paid)</td>
-              <td>${totalPaid}</td>
-              <td>Paid</td>
-            </tr>
-            <tr>
-              <td colSpan={3}>Total</td>
-              <td>${total}</td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
+      <div className="subscriptions-card-container">
+        <h2 className="subscriptions-card-title">Subscription Bills</h2>
+        <div className="subscriptions-table-header">
+          <span className="subscriptions-header-name">Name</span>
+          <span className="subscriptions-header-due-Date">Due Date</span>
+          <span className="subscriptions-header-past-Due">Past Due</span>
+          <span className="subscriptions-header-cost">Amount</span>
+          <span className="subscriptions-header-status">Status</span>
+          <span className="subscriptions-header-actions">Actions</span>
+        </div>
+
+        {activeSubscriptions.map((sub, index) => {
+          const dueDate = new Date(sub.dueDate);
+          const isPastDue = dueDate < new Date();
+
+          return (
+            <div key={index} className="subscriptions-row">
+              <span className="subscriptions-name">{sub.name}</span>
+              <span className="subscriptions-due-date">
+                {dueDate.toLocaleDateString("en-US", {
+                  month: "2-digit",
+                  day: "2-digit",
+                  year: "numeric",
+                })}
+              </span>
+              <span className="subscriptions-past-due">{isPastDue ? "Yes" : "No"}</span>
+              <span className="subscriptions-cost">${sub.cost.toFixed(2)}</span>
+              <span className="subscriptions-status">{sub.paymentStatus}</span>
+
+              <div className="subscriptions-actions">
+                <button
+                  className="paid-btn"
+                  onClick={() =>
+                    setSubscriptions((prev) =>
+                      prev.map((s) =>
+                        s.name === sub.name
+                          ? { ...s, paymentStatus: "Paid" }
+                          : s
+                      )
+                    )
+                  }
+                >
+                  Paid
+                </button>
+
+                <button
+                  className="unpaid-btn"
+                  onClick={() =>
+                    setSubscriptions((prev) =>
+                      prev.map((s) =>
+                        s.name === sub.name
+                          ? { ...s, paymentStatus: "Unpaid" }
+                          : s
+                      )
+                    )
+                  }
+                >
+                  Unpaid
+                </button>
+              </div>
+            </div>
+          );
+        })}
+
+        <div className="subscriptions-totals">
+          <div className="total-row">
+            <span className="total-label">Total (Paid):</span>
+            <span className="total-value">${totalPaid}</span>
+          </div>
+          <div className="total-row">
+            <span className="total-label">Grand Total:</span>
+            <span className="total-value">${total}</span>
+          </div>
+        </div>
       </div>
 
       {/* Payment History */}
-      <div className="card-container">
-        <h2 className="card-title">Payment History</h2>
+      <div className="history-card-container">
+        <h2 className="history-card-title">Payment History</h2>
         <div className="history-table-header">
           <span className="history-header-name">Name</span>
           <span className="history-header-dueDate">Due Date</span>
@@ -179,7 +199,9 @@ const BillsPage: React.FC = () => {
             <span className="history-name">{payment.name}</span>
             <span className="history-dueDate">{payment.dueDate}</span>
             <span className="history-paidDate">{payment.paidDate}</span>
-            <span className="history-amount">${payment.paymentAmount.toFixed(2)}</span>
+            <span className="history-amount">
+              ${payment.paymentAmount.toFixed(2)}
+            </span>
           </div>
         ))}
       </div>
