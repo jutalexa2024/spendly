@@ -1,0 +1,18 @@
+.error-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to right, rgb(0, 211, 118), rgb(0, 140, 233));
+    color: black;
+  }
+  
+  .error-container h1 {
+    font-size: 6rem;
+    margin-bottom: 1rem;
+  }
+  
+  .error-container p {
+    font-size: 2rem;
+  }
