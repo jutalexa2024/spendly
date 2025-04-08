@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "An app that tracks your subscriptions and bills",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build",
     "start": "npm run server",
-    "server": "cd server && npm start" 
+    "server": "cd server && npm start"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,7 @@
     "mongoose": "^8.13.2"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.9",
     "typescript": "^5.8.3"
   }
 }
