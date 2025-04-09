@@ -2,7 +2,6 @@ import NavLinks from "../nav/index"
 import "../../styles/layout.css"; // Import your CSS file
 import logo from "../../assets/spendly-logo.png"; // Adjust the path to your logo
 import { Link, useLocation } from "react-router-dom";
-
 const Header = () => {
   const location = useLocation();
 
