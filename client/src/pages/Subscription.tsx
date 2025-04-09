@@ -42,9 +42,9 @@ type Subscription = {
 };
 
 const SubscriptionPage = () => {
-  
   const userProfile = authService.loggedIn() ? authService.getProfile() : null;
   const username = userProfile?.data?.username || "guest";
+  const isAuthenticated = authService.loggedIn();
   
   // Apollo hooks
   const { loading, error, data } = useGetUserSubscriptions(username);
@@ -53,26 +53,29 @@ const SubscriptionPage = () => {
   const [deleteSubscription, { loading: deleteLoading }] = useDeleteSubscription();
   
   
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([
-    { name: "Netflix", status: "Active", cycle: "Monthly", cost: 15.99, paymentStatus: "Unpaid", dueDate: "2025-04-15"},
-    { name: "Spotify", status: "Inactive", cycle: "Monthly", cost: 9.99, paymentStatus: "Unpaid", dueDate: "2025-04-10" },
-    { name: "Hulu", status: "Active", cycle: "Monthly", cost: 9.99, paymentStatus: "Unpaid", dueDate: "2025-04-20" },
-    { name: "Microsoft 365", status: "Active", cycle: "Annually", cost: 99.99, paymentStatus: "Unpaid", dueDate: "2025-06-01" },
-    { name: "Amazon Prime", status: "Active", cycle: "Annually", cost: 100.00, paymentStatus: "Unpaid", dueDate: "2025-07-06"},
-    { name: "HBO Max", status: "Inactive", cycle: "Monthly", cost: 15.99, paymentStatus: "Unpaid", dueDate: "2025-04-18" }
-  ]);
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   
   useEffect(() => {
     if (data && data.getUserSubscriptions) {
       setSubscriptions(data.getUserSubscriptions);
+    } else if (!isAuthenticated) {
+      
+      setSubscriptions([
+        { name: "Netflix", status: "Active", cycle: "Monthly", cost: 15.99, paymentStatus: "Unpaid", dueDate: "2025-04-15"},
+        { name: "Spotify", status: "Inactive", cycle: "Monthly", cost: 9.99, paymentStatus: "Unpaid", dueDate: "2025-04-10" },
+        { name: "Hulu", status: "Active", cycle: "Monthly", cost: 9.99, paymentStatus: "Unpaid", dueDate: "2025-04-20" },
+        { name: "Microsoft 365", status: "Active", cycle: "Annually", cost: 99.99, paymentStatus: "Paid", dueDate: "2025-06-01" },
+        { name: "Amazon Prime", status: "Active", cycle: "Annually", cost: 100.0, paymentStatus: "Unpaid", dueDate: "2025-07-05" },
+        { name: "HBO Max", status: "Inactive", cycle: "Monthly", cost: 15.99, paymentStatus: "Unpaid", dueDate: "2025-04-18" },
+      ]);
     }
-  }, [data]);
+  }, [data, isAuthenticated]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   
-  // This is setting a state variable for adding New Subscription
+  
   const [newSubscription, setNewSubscriptiaon] = useState<Subscription>({
     name: "",
     status: "Active",
@@ -110,80 +113,52 @@ const SubscriptionPage = () => {
   const openDeleteConfirmModal = () => setIsDeleteConfirmModalOpen(true);
   const closeDeleteConfirmModal = () => setIsDeleteConfirmModalOpen(false);
 
-  
+  // Input change handlers
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
-    
-    if (name === "cost") {
-      if (value.trim() === "") {
-        setErrorMessage("Cost cannot be empty.");
-        return;
-      }
-
-      const costValue = parseFloat(value);
-
-      if (isNaN(costValue) || costValue < 0) {
-        setErrorMessage("Invalid cost. Please provide a valid positive number.");
-        return;
-      }
-      
-      setErrorMessage(""); // Clear the error message
-      setNewSubscriptiaon((prev) => ({ ...prev, [name]: costValue, })); // Update the cost as a number
-    } else {
-      setNewSubscriptiaon((prev) => ({ ...prev, [name]: value, }));
-    }
+    setNewSubscriptiaon({
+      ...newSubscription,
+      [name]: name === 'cost' ? parseFloat(value) || 0 : value,
+    });
   };
 
- 
-  const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    if (name === "name") {
-      if (value.trim() === "") {
-        setEditErrorMessage("Please provide a subscription name.");
-        return;
-      }
-    }
-
-    if (name === "cost") {
-      if (value.trim() === "") {
-        setEditErrorMessage("Cost cannot be empty");
-        return;
-      }
-      
-      const costValue = parseFloat(value);
-
-      if (isNaN(costValue) || costValue < 0) {
-        setEditErrorMessage("Invalid cost. Please provide a valid positive number.");
-        return;
-      }
-
-      setEditErrorMessage("");
-      setSelectedSubscription((prev) => ({ ...prev, [name]: costValue }));
-    } else {
-      setSelectedSubscription((prev) => ({ ...prev, [name]: value }));
-    }
-  };
-
-  
   const handleStatusChange = (status: "Active" | "Inactive") => {
-    setNewSubscriptiaon((prev) => ({ ...prev, status }));
-  };
-
-  const handleEditStatusChange = (status: "Active" | "Inactive") => {
-    setSelectedSubscription((prev) => ({ ...prev, status }));
+    setNewSubscriptiaon({
+      ...newSubscription,
+      status,
+    });
   };
 
   const handleCycleChange = (cycle: "Monthly" | "Annually") => {
-    setNewSubscriptiaon((prev) => ({ ...prev, cycle }));
+    setNewSubscriptiaon({
+      ...newSubscription,
+      cycle,
+    });
+  };
+
+  const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setSelectedSubscription({
+      ...selectedSubscription,
+      [name]: name === 'cost' ? parseFloat(value) || 0 : value,
+    });
+  };
+
+  const handleEditStatusChange = (status: "Active" | "Inactive") => {
+    setSelectedSubscription({
+      ...selectedSubscription,
+      status,
+    });
   };
 
   const handleEditCycleChange = (cycle: "Monthly" | "Annually") => {
-    setSelectedSubscription((prev) => ({ ...prev, cycle }));
+    setSelectedSubscription({
+      ...selectedSubscription,
+      cycle,
+    });
   };
-
-  // Add subscription
+  
+  //NEW - Update handle add subscription
   const handleAddSubscription = async () => {
     if (newSubscription.name.trim() === "") {
       setErrorMessage("Subscription name cannot be empty.");
@@ -195,10 +170,49 @@ const SubscriptionPage = () => {
       return;
     }
 
-    setErrorMessage(""); // Clear error message if input is valid
-    setSubscriptions([...subscriptions, newSubscription]); // Add new subscription to the state
-    setNewSubscriptiaon({ name: "", status: "Active", cycle: "Monthly", cost: 0.00, paymentStatus: "Unpaid", dueDate: new Date().toISOString().split("T")[0] }); // Reset the form
-    onClose(); // Close the modal window
+    setErrorMessage(""); 
+    
+    try {
+      if (isAuthenticated) {
+       
+        const { data } = await createSubscription({
+          variables: {
+            username,
+            subscription: {
+              name: newSubscription.name,
+              status: newSubscription.status,
+              cycle: newSubscription.cycle,
+              cost: newSubscription.cost,
+              paymentStatus: newSubscription.paymentStatus,
+              dueDate: newSubscription.dueDate
+            }
+          }
+        });
+        
+       
+        if (data && data.createSubscription) {
+          setSubscriptions(prev => [...prev, data.createSubscription]);
+        }
+      } else {
+        
+        setSubscriptions([...subscriptions, newSubscription]);
+      }
+      
+      // Reset the form
+      setNewSubscriptiaon({
+        name: "",
+        status: "Active",
+        cycle: "Monthly",
+        cost: 0.00,
+        paymentStatus: "Unpaid",
+        dueDate: new Date().toISOString().split("T")[0]
+      });
+      
+      onClose();
+    } catch (err: any) {
+      console.error("Error adding subscription:", err);
+      setErrorMessage(`Failed to add subscription: ${err.message}`);
+    }
   };
 
   
@@ -216,7 +230,7 @@ const SubscriptionPage = () => {
     setEditErrorMessage("");
     
     try {
-      if (authService.loggedIn() && selectedSubscription._id) {
+      if (isAuthenticated && selectedSubscription._id) {
         await updateSubscription({
           variables: {
             _id: selectedSubscription._id,
@@ -247,7 +261,7 @@ const SubscriptionPage = () => {
   
   const handleDeleteSubscription = async () => {
     try {
-      if (authService.loggedIn() && selectedSubscription._id) {
+      if (isAuthenticated && selectedSubscription._id) {
         await deleteSubscription({
           variables: {
             _id: selectedSubscription._id,
@@ -268,6 +282,24 @@ const SubscriptionPage = () => {
       setEditErrorMessage(`Failed to delete subscription: ${err.message}`);
     }
   };
+
+ 
+  if (!isAuthenticated) {
+    return (
+      <div>
+        <h1 className="page-title">My Subscription</h1>
+        <Alert status="warning" marginBottom="20px">
+          <AlertIcon />
+          You are viewing demo data. Please <a href="/login" style={{color: 'blue', textDecoration: 'underline'}}>login</a> to manage your real subscriptions.
+        </Alert>
+        
+        {}
+        <div className="subscription-container">
+          {}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -336,7 +368,6 @@ const SubscriptionPage = () => {
           </>
         )}
       </div>
-
       {/* Add Subscription Modal */}
       <Modal
         initialFocusRef={initialRef}
