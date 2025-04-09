@@ -14,7 +14,7 @@ const Header = () => {
         <img src={logo} alt="Spendly Logo" className="logo" />
         </Link>
       </div>
-      {location.pathname === "/" ? (
+      {["/", "/login", "/signup"].includes(location.pathname) ? (
         <div className= "nav-links">
           <Link to="/login" className="nav-link">Login</Link>
           <Link to="/signup" className="nav-link">Sign Up</Link>
