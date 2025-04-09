@@ -7,7 +7,7 @@ import './index.css';
 import BillsPage from './pages/Bills';
 // import Dashboard from './pages/Dashboard.tsx';
 import LoginPage from './pages/Login';
-// import SignUpPage from './pages/Signup.tsx';
+import SignUpPage from './pages/Signup';
 import Subscription from './pages/Subscription';
 // import UserPreference from './pages/UserPreferences.tsx'
 import App from './App';
@@ -37,10 +37,10 @@ const router = createBrowserRouter([
         path: "/login",
         element: <LoginPage />,
       },
-    //   {
-    //     path: "/signup",
-    //     element: <SignUpPage />,
-    //   },
+      {
+        path: "/signup",
+        element: <SignUpPage />,
+      },
       {
         path: "/subscription",
         element: <Subscription />,
