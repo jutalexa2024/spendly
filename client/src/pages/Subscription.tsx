@@ -72,7 +72,7 @@ const SubscriptionPage = () => {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   
-  
+  // This is setting a state variable for adding New Subscription
   const [newSubscription, setNewSubscriptiaon] = useState<Subscription>({
     name: "",
     status: "Active",
@@ -199,6 +199,7 @@ const SubscriptionPage = () => {
     setSubscriptions([...subscriptions, newSubscription]); // Add new subscription to the state
     setNewSubscriptiaon({ name: "", status: "Active", cycle: "Monthly", cost: 0.00, paymentStatus: "Unpaid", dueDate: new Date().toISOString().split("T")[0] }); // Reset the form
     onClose();
+  };
 
   
   const handleSaveEditSubscription = async () => {
