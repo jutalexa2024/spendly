@@ -7,7 +7,7 @@ import bodyParser from 'body-parser';
 import connectDB from './config/connection.js';
 import { typeDefs, resolvers } from './schemas/index.js';
 import { authenticateToken } from './utils/auth.js';
-import { User, Bill, Subscription } from './models/index.js'; // Assuming these models are exported from here
+import { User, Bill, Subscription } from './models/index.js';
 
 const startApolloServer = async () => {
   try {
@@ -35,17 +35,19 @@ const startApolloServer = async () => {
       bodyParser.json(),
       expressMiddleware(server, {
         context: async ({ req }) => {
-          
           const user = authenticateToken(req as any);
           return { models: { User, Bill, Subscription }, user };
         },
-      }) as express.RequestHandler
+      }) as unknown as express.RequestHandler
     );
     
-    await new Promise<void>((resolve) => httpServer.listen({ port: PORT }, () => resolve()));
-    
-    console.log(`🚀 API server running on port ${PORT}`);
-    console.log(`GraphQL available at http://localhost:${PORT}/graphql`);
+    await new Promise<void>((resolve) => 
+      httpServer.listen({ port: PORT }, () => {
+        console.log(`🚀 API server running on port ${PORT}`);
+        console.log(`GraphQL available at http://localhost:${PORT}/graphql`);
+        resolve();
+      })
+    );
     
   } catch (err) {
     console.error('Error starting server:', err);
