@@ -13,6 +13,8 @@ import Subscription from './pages/Subscription';
 import App from './App';
 import HomePage from './pages/Home';
 import ErrorPage from './pages/ErrorPage';
+import Dashboard from './pages/Dashboard';
+
 
 
 const router = createBrowserRouter([
@@ -25,14 +27,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <HomePage />,
       },
-      // {
-      //   path: "/about",
-      //   element: <AboutPage />,
-      // },
-    //   {
-    //     path: "/dashboard",
-    //     element: <Dashboard />,
-    //   },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+      },
       {
         path: "/login",
         element: <LoginPage />,

@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import "../styles/home.css";
 
@@ -17,7 +16,6 @@ const Home = () => {
         You can add, edit, and delete subscriptions and bills, and you can also see a list of all them in one place. 
         Spendly is the perfect app for anyone who wants to take control of their finances and stay on top of their bills.
       </p>
-        <Link className="about-link" to="/about">About</Link>
       </div>
       <div className="right-column">
         <img src="Spendly-preview-img.png" alt="Preview Image" className="preview-image" />
