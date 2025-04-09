@@ -72,6 +72,8 @@ const SubscriptionPage = () => {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   
+  // This is setting a state variable for adding New Subscription
+  // This is setting a state variable for adding New Subscription
   const [newSubscription, setNewSubscription] = useState<Subscription>({
     name: "",
     status: "Active",
@@ -194,7 +196,7 @@ const SubscriptionPage = () => {
       return;
     }
 
-    setErrorMessage("");
+    setErrorMessage(""); // Clear error message if input is valid
     
     try {
       if (authService.loggedIn()) {
@@ -205,7 +207,7 @@ const SubscriptionPage = () => {
           }
         });
       } else {
-        
+        // For non-logged in users, just update local state
         setSubscriptions([...subscriptions, newSubscription]);
       }
       
@@ -218,7 +220,7 @@ const SubscriptionPage = () => {
         dueDate: new Date().toISOString().split("T")[0]
       });
       
-      onClose();
+      onClose(); // Close the modal window
     } catch (err: any) {
       console.error("Error creating subscription:", err);
       setErrorMessage(`Failed to create subscription: ${err.message}`);
