@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../styles/subscription.css";
+
 import {
   Button,
   Modal,
@@ -45,7 +46,7 @@ const SubscriptionPage = () => {
   const finalRef = React.useRef(null);
   
   // This is setting a state variable for adding New Subscription
-  const [newSubscription, setNewSubscription] = useState<Subscription>({
+  const [newSubscription, setNewSubscriptiaon] = useState<Subscription>({
     name: "",
     status: "Active",
     cycle: "Monthly",
