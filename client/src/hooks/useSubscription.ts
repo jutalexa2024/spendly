@@ -9,11 +9,18 @@ import {
 } from '../utils/subscriptionOperations';
 
 export const useGetUserSubscriptions = (username: string) => {
-    return useQuery(GET_USER_SUBSCRIPTIONS, {
-      variables: { username },
-      skip: !username
-    });
-  };
+  const token = localStorage.getItem('id_token');
+  
+  return useQuery(GET_USER_SUBSCRIPTIONS, {
+    variables: { username },
+    skip: !username || !token,
+    context: {
+      headers: {
+        authorization: token ? `Bearer ${token}` : '',
+      }
+    }
+  });
+};
   
   export const useCreateSubscription = () => {
     return useMutation(CREATE_SUBSCRIPTION, {

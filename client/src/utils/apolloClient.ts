@@ -21,9 +21,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 
 const authLink = setContext((_, { headers }) => {
-  
   const token = localStorage.getItem('id_token');
-  
   
   return {
     headers: {
@@ -32,7 +30,6 @@ const authLink = setContext((_, { headers }) => {
     }
   };
 });
-
 
 const client = new ApolloClient({
   link: from([errorLink, authLink, httpLink]),
