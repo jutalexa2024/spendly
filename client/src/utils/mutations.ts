@@ -94,3 +94,11 @@ export const QUERY_USER_BILLS = gql`
   }
 `;
 
+type Mutation {
+  login(email: String!, password: String!): AuthPayload
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
