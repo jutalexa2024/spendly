@@ -7,7 +7,6 @@ const typeDefs = `
     email: String
   }
 
-
   type Bill {
     _id: ID!
     username: String
@@ -16,8 +15,7 @@ const typeDefs = `
     amount: Float
     dueDate: String
     user_id: ID
-    }
-
+  }
 
   type Subscription {
     _id: ID!
@@ -27,21 +25,21 @@ const typeDefs = `
   }
 
   input AddSubscriptionInput {
-  username: String!
-  cost: Float!
-  renewalDate: String!
-}
+    username: String!
+    cost: Float!
+    renewalDate: String!
+  }
 
-input AddBillInput {
-  username: String!
-  category: String!
-  name: String!
-  amount: Float!
-  dueDate: String!
-}
+  input AddBillInput {
+    username: String!
+    category: String!
+    name: String!
+    amount: Float!
+    dueDate: String!
+  }
 
   input UserInput {
-    name: String!
+    username: String!
     email: String!
     password: String!
   }
@@ -52,18 +50,15 @@ input AddBillInput {
   }
 
   type Query {
-  users: [User]
-  bills: [Bill]
-  subscriptions: [Subscription]
-  userBills(username: String!): [Bill]
-  user(id: ID!): User
-  bill(id: ID!): Bill
-  subscription(id: ID!): Subscription
-  me: User
+    users: [User]
+    bills: [Bill]
+    subscriptions: [Subscription]
+    userBills(username: String!): [Bill]
+    user(id: ID!): User
+    bill(id: ID!): Bill
+    subscription(id: ID!): Subscription
+    me: User
   }
-
-  ## delete bills/subscriptions
-
 
   type Mutation {
     addUser(input: UserInput!): Auth
@@ -72,7 +67,5 @@ input AddBillInput {
     addSubscription(username: String!, cost: Float!, renewalDate: String!): Subscription
   }
 `;
-
-
 
 export default typeDefs;

@@ -1,21 +1,16 @@
 {
   "compilerOptions": {
-    /* Language and Environment */
     "target": "ESNext",
-    /* Modules */
     "module": "ESNext",
     "moduleResolution": "node",
     "skipLibCheck": true,
     "rootDir": "./src",
     "outDir": "./dist",
-    /* JavaScript Support */
     "allowJs": true,
     "checkJs": true,
-    /* Interop Constraints */
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    /* Type Checking */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -25,8 +20,6 @@
     "noImplicitOverride": true,
     "useUnknownInCatchVariables": true
   },
-  "include": ["src"],  // Only include source files
-  "typeRoots": [
-    "./node_modules/@types",
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }

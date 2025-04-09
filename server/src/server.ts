@@ -1,16 +1,16 @@
 import express from 'express';
 import http from 'http';
-import connectDB from './config/connection.js';
+import cors from 'cors';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
-
+import bodyParser from 'body-parser';
+import connectDB from './config/connection.js';
 import { typeDefs, resolvers } from './schemas/index.js';
-import { User, Bill, Subscription } from './models/index.js';
 import { authenticateToken } from './utils/auth.js';
 
 const startApolloServer = async () => {
   await connectDB();
-
+  
   const app = express();
   const httpServer = http.createServer(app);
 
@@ -21,24 +21,21 @@ const startApolloServer = async () => {
 
   await server.start();
 
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: false }));
-
   app.use(
     '/graphql',
+    cors(),
+    bodyParser.json(),
+    bodyParser.urlencoded({ extended: true }),
     expressMiddleware(server, {
       context: async ({ req }) => {
-        const user = authenticateToken(req);
-        return { models: { User, Bill, Subscription }, user };
-      },
-    }) as unknown as express.RequestHandler
+        return authenticateToken({ req: req as any });
+      }
+    })
   );
-
   const PORT = process.env.PORT || 3001;
-  await new Promise<void>((resolve) => httpServer.listen({ port: PORT }, resolve));
+  await new Promise<void>((resolve) => httpServer.listen({ port: PORT }, () => resolve()));
 
-  console.log(`API server running on port ${PORT}!`);
-  console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
+  console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
 };
 
 startApolloServer().catch((err) => console.error('Error starting server:', err));

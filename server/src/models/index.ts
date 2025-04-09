@@ -1,6 +1,5 @@
-import Bill from './Bill.js';
 import User from './User.js';
+import Bill from './Bill.js';
 import Subscription from './Subscription.js';
 
-
-export { Bill, User,Subscription};
+export { User, Bill, Subscription };
