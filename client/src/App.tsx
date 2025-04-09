@@ -1,23 +1,7 @@
 import React, { createContext, useState } from "react";
 import {Outlet } from "react-router-dom";
 import Header from "./components/header/index";
-
-// Define the Subscription type
-type Subscription = {
-  name: string;
-  status: "Active" | "Inactive";
-  paymentStatus: "Paid" | "Unpaid";
-  cycle: "Monthly" | "Annually";
-  cost: number;
-  dueDate: string;
-};
-
-// Create a context to provide subscriptions and their updater
-export const AppContext = createContext<{
-  subscriptions: Subscription[];
-  setSubscriptions: React.Dispatch<React.SetStateAction<Subscription[]>>;
-} | null>(null);
-
+import Footer from "./components/footer/index";
 
 function App() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([
@@ -34,6 +18,7 @@ function App() {
       <Header />
       {/* <Navbar /> */}
       <Outlet /> {/* This is where child pages (Login, Dashboard, etc.) will be displayed */}
+      <Footer />
       
     </AppContext.Provider>
     
