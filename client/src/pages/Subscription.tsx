@@ -168,7 +168,7 @@ const SubscriptionPage = () => {
 
   
   const handleStatusChange = (status: "Active" | "Inactive") => {
-    setNewSubscription((prev) => ({ ...prev, status }));
+    setNewSubscriptiaon((prev) => ({ ...prev, status }));
   };
 
   const handleEditStatusChange = (status: "Active" | "Inactive") => {
@@ -176,7 +176,7 @@ const SubscriptionPage = () => {
   };
 
   const handleCycleChange = (cycle: "Monthly" | "Annually") => {
-    setNewSubscription((prev) => ({ ...prev, cycle }));
+    setNewSubscriptiaon((prev) => ({ ...prev, cycle }));
   };
 
   const handleEditCycleChange = (cycle: "Monthly" | "Annually") => {
