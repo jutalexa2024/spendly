@@ -93,3 +93,16 @@ export const QUERY_USER_BILLS = gql`
     }
   }
 `;
+
+export const ADD_USER = gql`
+  mutation AddUser($input: AddUserInput!) {
+    addUser(input: $input) {
+      token
+      user {
+        user_id
+        username
+        email
+      }
+    }
+  }
+`;
