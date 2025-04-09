@@ -3,9 +3,7 @@ import { GraphQLError } from 'graphql';
 import dotenv from 'dotenv';
 dotenv.config();
 
-
-export const authenticateToken = ({ req }: any) => {
-
+export const authenticateToken = (req: any) => {
   let token = req.body.token || req.query.token || req.headers.authorization;
 
   if (req.headers.authorization) {
@@ -38,4 +36,4 @@ export class AuthenticationError extends GraphQLError {
     super(message, undefined, undefined, undefined, ['UNAUTHENTICATED']);
     Object.defineProperty(this, 'name', { value: 'AuthenticationError' });
   }
-};
+}
