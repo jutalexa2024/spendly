@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(to right, rgb(46, 204, 113), rgb(0, 140, 233));
+    background: linear-gradient(to right, #00C96D, #0077ff);
   }
   
   .signup-form {
@@ -45,6 +45,7 @@
     border-radius: 4px;
     font-size: 1.2rem;
     cursor: pointer;
+    margin-bottom: 1.5rem;
   }
   
   .signup-form button:hover {

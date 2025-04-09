@@ -5,15 +5,14 @@ import './index.css';
 
 // import AboutPage from './pages/About.tsx'
 import BillsPage from './pages/Bills';
-// import Dashboard from './pages/Dashboard.tsx';
+import Dashboard from './pages/Dashboard';
 import LoginPage from './pages/Login';
 import SignUpPage from './pages/Signup';
 import Subscription from './pages/Subscription';
 // import UserPreference from './pages/UserPreferences.tsx'
 import App from './App';
-// import HomePage from './pages/Home';
+import HomePage from './pages/Home';
 import ErrorPage from './pages/ErrorPage';
-
 
 const router = createBrowserRouter([
   {
@@ -21,18 +20,18 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
-      // {
-      //   path: "/",
-      //   element: <HomePage />,
-      // },
+      {
+        path: "/",
+        element: <HomePage />,
+      },
     //   {
     //     path: "/about",
     //     element: <AboutPage />,
     //   },
-    //   {
-    //     path: "/dashboard",
-    //     element: <Dashboard />,
-    //   },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+      },
       {
         path: "/login",
         element: <LoginPage />,

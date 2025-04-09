@@ -1,6 +1,7 @@
 import React, { createContext, useState } from "react";
 import {Outlet } from "react-router-dom";
 import Header from "./components/header/index";
+import Footer from "./components/footer";
 
 // Define the Subscription type
 type Subscription = {
@@ -16,6 +17,8 @@ type Subscription = {
 export const AppContext = createContext<{
   subscriptions: Subscription[];
   setSubscriptions: React.Dispatch<React.SetStateAction<Subscription[]>>;
+  user: { username: string } | null;
+  setUser: React.Dispatch<React.SetStateAction<{ username: string } | null>>
 } | null>(null);
 
 
@@ -29,12 +32,14 @@ function App() {
     { name: "HBO Max", status: "Inactive", paymentStatus: "Unpaid", cycle: "Monthly", cost: 15.99, dueDate: "2025-04-18" },
   ]);
 
+  const [user, setUser] = useState<{ username: string } | null>(null);
+
   return (
-    <AppContext.Provider value={{ subscriptions, setSubscriptions}}>
+    <AppContext.Provider value={{ subscriptions, setSubscriptions, user, setUser}}>
       <Header />
       {/* <Navbar /> */}
       <Outlet /> {/* This is where child pages (Login, Dashboard, etc.) will be displayed */}
-      
+      <Footer />
     </AppContext.Provider>
     
   );

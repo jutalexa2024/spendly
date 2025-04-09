@@ -1,6 +1,7 @@
 .nav-links {
   display: flex;
   gap: 20px;
+  align-items: center;
 }
 
 .nav-links a {
@@ -12,4 +13,46 @@
 
 .nav-links a:hover {
   text-decoration: underline;
+}
+
+.user-section {
+  display: flex;
+  gap: 10px; /* Space between username and logout button */
+  align-items: center; /* Aligns username and button vertically */
+  color: white;
+}
+
+.user-section span {
+  background: transparent;
+  font-size: 16px;
+  font-style: italic;
+  border: 1px solid white;
+  font-weight: bold;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.user-section:hover {
+  /* background: white; */
+  color: rgb(40, 184, 83); /* Changes to a light blue on hover */
+  border-color: rgb(0, 120, 200);
+}
+
+.logout-button {
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: white;
+  color: rgb(0, 120, 200); /* Changes to a light blue on hover */
+  border-color: rgb(0, 120, 200);
 }
