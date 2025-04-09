@@ -18,7 +18,7 @@ interface User {
 }
 
 interface UserArgs {
-  _id: number;
+  user_id: number;
 }
 
 interface AddBillArgs {
@@ -53,8 +53,8 @@ const resolvers = {
   Query: {
     users: async () => await User.find(),
     bills: async () => await Bill.find(),
-    user: async (_parent: unknown, { _id }: UserArgs): Promise<User | null> => {
-      return await User.findOne({ user_id: _id });
+    user: async (_parent: unknown, { user_id }: UserArgs): Promise<User | null> => {
+      return await User.findOne({ user_id: user_id });
     },
     subscriptions: async () => await Subscription.find(),
     
@@ -83,7 +83,7 @@ const resolvers = {
   Mutation: {
     addUser: async (_parent: any, { input }: AddUserArgs) => {
       const user = await User.create({ ...input });
-      const token = signToken(user.username, user.email, user._id);
+      const token = signToken(user.username, user.email, user.user_id);
       return { token, user };
     },
     

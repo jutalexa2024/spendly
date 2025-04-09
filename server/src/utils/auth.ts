@@ -4,9 +4,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const authenticateToken = (req: any) => {
-  let token = req.body.token || req.query.token || req.headers.authorization;
+  let token = req?.body?.token || req?.query?.token || req?.headers?.authorization;
 
-  if (req.headers.authorization) {
+  if (req?.headers?.authorization) {
     token = token.split(' ').pop().trim();
   }
 
@@ -23,6 +23,7 @@ export const authenticateToken = (req: any) => {
 
   return req;
 };
+
 
 export const signToken = (username: string, email: string, _id: unknown) => {
   const payload = { username, email, _id };
