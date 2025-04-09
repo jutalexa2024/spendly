@@ -198,7 +198,7 @@ const SubscriptionPage = () => {
     setErrorMessage(""); // Clear error message if input is valid
     setSubscriptions([...subscriptions, newSubscription]); // Add new subscription to the state
     setNewSubscriptiaon({ name: "", status: "Active", cycle: "Monthly", cost: 0.00, paymentStatus: "Unpaid", dueDate: new Date().toISOString().split("T")[0] }); // Reset the form
-    onClose();
+    onClose(); // Close the modal window
   };
 
   
