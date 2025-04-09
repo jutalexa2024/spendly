@@ -64,9 +64,9 @@ const SubscriptionPage = () => {
     dueDate: "",
   });
   
-  // Error messages for when user add a new subscription or edit it.
-  const [errorMessage, setErrorMessage] = useState(""); // Add Subscription Modal
-  const [editErrorMessage, setEditErrorMessage] = useState(""); // Edit modal message
+  
+  const [errorMessage, setErrorMessage] = useState(""); 
+  const [editErrorMessage, setEditErrorMessage] = useState(""); 
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
