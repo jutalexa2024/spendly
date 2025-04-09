@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../styles/subscription.css";
+
 import {
   Button,
   Modal,
@@ -71,7 +72,6 @@ const SubscriptionPage = () => {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   
-  
   const [newSubscription, setNewSubscription] = useState<Subscription>({
     name: "",
     status: "Active",
@@ -127,8 +127,8 @@ const SubscriptionPage = () => {
         return;
       }
       
-      setErrorMessage("");
-      setNewSubscription((prev) => ({ ...prev, [name]: costValue }));
+      setErrorMessage(""); // Clear the error message
+      setNewSubscription((prev) => ({ ...prev, [name]: costValue })); // Update the cost as a number
     } else {
       setNewSubscription((prev) => ({ ...prev, [name]: value }));
     }
