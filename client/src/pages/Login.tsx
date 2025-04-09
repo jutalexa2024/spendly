@@ -1,7 +1,6 @@
-import "../styles/login.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import "../styles/login.css";
 
 
 const Login = () => {
@@ -62,9 +61,9 @@ const Login = () => {
         {error && <p className="error-message">{error}</p>}  {/*This display the error message*/}
 
         <button type="submit">Login</button>
-        <p>
-          Don't have an account? <a href="/signup">Sign Up</a>
-        </p>
+        <h3>
+          Don't have an account? <a href="/signup" className="signup-link">Sign Up</a>
+        </h3>
       </form>
     </div>
   );

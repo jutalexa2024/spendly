@@ -1,5 +1,4 @@
 import { Schema, model, Document } from 'mongoose';
-import User from './User';
 
 export interface IBill extends Document {
     bill_id: number;
@@ -40,13 +39,6 @@ const billSchema = new Schema<IBill>(
       ref: 'User'
     }
 
-    
-    // classes: [
-    //   {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'Class',
-    //   },
-    // ],
   },
   {
     timestamps: true,

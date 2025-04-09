@@ -12,12 +12,19 @@
     border-radius: 8px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    width: 400px;
-    max-width: 90%;
+    width: 450px;
+    max-width: 100%;
   }
   
   .login-form h2 {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .login-form h3 {
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
   }
 
   .login-form label {
@@ -29,7 +36,7 @@
   .login-form input {
     width: 100%;
     padding: 10px;
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
     border: 1px solid #ccc;
     border-radius: 4px;
   }
@@ -38,8 +45,8 @@
     background: rgb(0, 140, 233);
     color: white;
     border: none;
-    padding: 10px;
-    width: 50%;
+    padding: 7px;
+    width: 40%;
     border-radius: 4px;
     font-size: 1.2rem;
     cursor: pointer;
@@ -48,6 +55,19 @@
   .login-form button:hover {
     background: rgb(0, 120, 200);
   }
+
+  .signup-link {
+    color: rgb(0, 120, 200); 
+    /* font-weight: bold;  */
+    text-decoration:none;
+    cursor: pointer;
+  }
+  
+  .signup-link:hover {
+    color: rgb(94, 161, 206);  /* Slightly darker green for hover state */
+    text-decoration: underline; /* Add underline on hover for better UX */
+  }
+  
 
   .error-message {
     color: red;

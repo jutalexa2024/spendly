@@ -1,9 +1,10 @@
-import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import './index.css'
+import ReactDOM from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { ChakraProvider } from "@chakra-ui/react";
+import './index.css';
 
 // import AboutPage from './pages/About.tsx'
-// import Billpage from './pages/Bills.tsx';
+import BillsPage from './pages/Bills';
 // import Dashboard from './pages/Dashboard.tsx';
 import LoginPage from './pages/Login';
 // import SignUpPage from './pages/Signup.tsx';
@@ -44,16 +45,15 @@ const router = createBrowserRouter([
         path: "/subscription",
         element: <Subscription />,
       },
-    //   {
-    //     path: "/bills",
-    //     element: <Billpage />,
-    //   },
+      {
+        path: "/bills",
+        element: <BillsPage />,
+      },
     //   {
     //     path: "/usersettings",
     //     element: <UserPreference />,
-    //   },
+    //   }, 
       
-
     ],
   },
 ]);
@@ -61,6 +61,8 @@ const router = createBrowserRouter([
 const rootElement = document.getElementById('root');
 if(rootElement) {
   ReactDOM.createRoot(rootElement).render(
-    <RouterProvider router={router} />
+    <ChakraProvider>
+      <RouterProvider router={router} />
+    </ChakraProvider>
   );
 }
