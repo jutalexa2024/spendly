@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
-import { ADD_USER } from "../utils/mutations"; // Adjust path if needed
+import { ADD_USER } from "../utils/mutations"; 
 import "../styles/signup.css";
 
 const Signup = () => {
