@@ -1,4 +1,4 @@
-// server/src/schemas/typeDefs.ts
+
 const typeDefs = `
   # Define which fields are accessible from the User model
   type User {
