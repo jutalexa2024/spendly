@@ -54,7 +54,7 @@ const SubscriptionPage = () => {
     dueDate: "",
   });
 
-  // This is setting a state variable for Editing (information held) Subscription
+  
   const [selectedSubscription, setSelectedSubscription] = useState<Subscription>({
     name: "",
     status: "Active",
@@ -71,8 +71,8 @@ const SubscriptionPage = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const openEditModal = (subscription: Subscription) => {
-    setSelectedSubscription(subscription); // Populate the state with row data
-    setIsEditModalOpen(true); // Open the modal
+    setSelectedSubscription(subscription); 
+    setIsEditModalOpen(true); 
   };
 
   const closeEditModal = () => setIsEditModalOpen(false);
@@ -83,26 +83,26 @@ const SubscriptionPage = () => {
   const closeDeleteConfirmModal = () => setIsDeleteConfirmModalOpen(false);
 
 
-  // This block of code will handle the submitted inputs from Modal window
+  
   const handleInputChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
     // Checking if Cost input is valid
     if (name === "cost") {
       if (value.trim() === "") {
-        setErrorMessage("Cost cannot be empty."); // Set an error message for empty input
+        setErrorMessage("Cost cannot be empty."); 
         return;
       }
 
       const costValue = parseFloat(value);
 
-      // Check if the cost is not a number or is a negaive number
+      
       if (isNaN(costValue) || costValue < 0) {
         setErrorMessage("Invalid cost. Please provide a valid positive number.");
-        return; // Prevent invalid updates
+        return; 
       }
       setErrorMessage(""); // Clear the error message
-      setNewSubscription((prev) => ({ ...prev, [name]: costValue, })); // Update the cost as a number
+      setNewSubscription((prev) => ({ ...prev, [name]: costValue, }));
     } else {
       setNewSubscription((prev) => ({ ...prev, [name]: value, }));
     }
@@ -114,7 +114,7 @@ const SubscriptionPage = () => {
 
     if (name === "name") {
       if (value.trim() === "") {
-        setEditErrorMessage("Please provide a subscription name."); // Set an error message for empty input
+        setEditErrorMessage("Please provide a subscription name.");
         return;
       }
     }
@@ -127,12 +127,12 @@ const SubscriptionPage = () => {
       const costValue = parseFloat(value);
 
       if (isNaN(costValue) || costValue < 0) {
-        setEditErrorMessage("Invalid cost. Please provide a valid positive number."); // Set error for invalid numbers
+        setEditErrorMessage("Invalid cost. Please provide a valid positive number."); 
         return;
       }
 
-      setEditErrorMessage(""); // Clear error message if input is valid
-      setSelectedSubscription((prev) => ({...prev, [name]: costValue, })); // Update the cost as a number
+      setEditErrorMessage(""); 
+      setSelectedSubscription((prev) => ({...prev, [name]: costValue, })); 
   
     } else {
       setSelectedSubscription((prev) => ({ ...prev, [name]: value, }));
