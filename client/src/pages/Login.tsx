@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate } from "react-router-dom";
 import "../styles/login.css";
 import { AppContext } from "../App";
 
@@ -82,7 +82,7 @@ const Login = () => {
 
         <button type="submit">Login</button>
         <h3>
-          Don't have an account? <a href="/signup" className="signup-link">Sign Up</a>
+        Don't have an account? <Link to="/signup" className="signup-link">Sign Up</Link>
         </h3>
       </form>
     </div>
