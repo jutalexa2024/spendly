@@ -20,8 +20,7 @@ const Home = () => {
         <Link className="about-link" to="/about">About</Link>
       </div>
       <div className="right-column">
-        <img 
-        src="Spendly-subscription-preview.png" alt="Preview Image" className="preview-image" />
+        <img src="Spendly-preview-img.png" alt="Preview Image" className="preview-image" />
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://spendly.app" alt="QR Code" className="qr-code" />
         <p>Download This App</p>
         <div className="store-buttons">

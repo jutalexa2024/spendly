@@ -1,6 +1,7 @@
 import React, { createContext, useState } from "react";
 import {Outlet } from "react-router-dom";
 import Header from "./components/header/index";
+import Footer from "./components/footer/index";
 
 // Define the Subscription type
 type Subscription = {
