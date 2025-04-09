@@ -46,7 +46,7 @@ const SubscriptionPage = () => {
   const username = userProfile?.data?.username || "guest";
   const isAuthenticated = authService.loggedIn();
   
-  // Apollo hooks
+  
   const { loading, error, data } = useGetUserSubscriptions(username);
   const [createSubscription, { loading: createLoading }] = useCreateSubscription();
   const [updateSubscription, { loading: updateLoading }] = useUpdateSubscription();
@@ -158,7 +158,7 @@ const SubscriptionPage = () => {
     });
   };
   
-  //NEW - Update handle add subscription
+  
   const handleAddSubscription = async () => {
     if (newSubscription.name.trim() === "") {
       setErrorMessage("Subscription name cannot be empty.");
