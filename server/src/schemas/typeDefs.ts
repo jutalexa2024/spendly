@@ -19,18 +19,40 @@ const typeDefs = `
     }
 
 
-  type Subscription {
+   type Subscription {
     _id: ID!
-    username: String
-    cost: Float
-    renewalDate: String
+    user_id: ID
+    username: String!
+    name: String!
+    status: String!
+    cycle: String!
+    cost: Float!
+    paymentStatus: String!
+    dueDate: String!
   }
 
-  input AddSubscriptionInput {
-  username: String!
-  cost: Float!
-  renewalDate: String!
-}
+  input SubscriptionInput {
+    name: String!
+    status: String!
+    cycle: String!
+    cost: Float!
+    paymentStatus: String!
+    dueDate: String!
+  }
+
+  # Add to your Query type
+  extend type Query {
+    getUserSubscriptions(username: String!): [Subscription]
+  }
+
+  # Add to your Mutation type
+  extend type Mutation {
+    createSubscription(username: String!, subscription: SubscriptionInput!): Subscription
+    updateSubscription(_id: ID!, subscription: SubscriptionInput!): Subscription
+    deleteSubscription(_id: ID!): Boolean
+    updateSubscriptionStatus(_id: ID!, status: String!): Subscription
+    updateSubscriptionPaymentStatus(_id: ID!, paymentStatus: String!): Subscription
+  }
 
 input AddBillInput {
   username: String!
@@ -72,6 +94,8 @@ input AddBillInput {
     addSubscription(username: String!, cost: Float!, renewalDate: String!): Subscription
   }
 `;
+
+
 
 
 
