@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/login.css";
+import { AppContext } from "../App";
 
 
 const Login = () => {
@@ -9,14 +10,22 @@ const Login = () => {
   const [error, setError] = useState("");
   //const [loading, setLoading] = useState(false); // Fix: Added useState for loading
   const navigate = useNavigate();
+  
+  const context = useContext(AppContext);
+
+  if (!context) {
+    return <p>Error: AppContext not available.</p>;
+  }
+
+  const { setUser } = context; // Destructure setUser from AppContext
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-  
     // Clear error when the user starts typing
     setError("");
 
+    // Validation Check for empty fields
     if (!email || !password) {
       if (!email && !password){
         setError("Please enter both email and password.");
@@ -30,12 +39,23 @@ const Login = () => {
       return;
     }
 
+    const signupData = JSON.parse(localStorage.getItem("signupData") || "{}");
+
     // TODO: Replace with API call to backend authentication
-    if (email === "myemail@email.com" && password === "password123") {
-      navigate("/subscription"); // Redirect to dashboard page if login is successful
+    if (email === signupData.email && password === signupData.password) {
+      setUser({ username: signupData.username }); // Use username from signupData to show in the navbar link
+      navigate("/dashboard"); // Redirect if credentials match
     } else {
       setError("Invalid credentials. Please try again.");
     }
+
+    // TODO: Replace with API call to backend authentication
+    // if (email === "myemail@email.com" && password === "password123") {
+    //   setUser({username:"JohnDoe"});
+    //   navigate("/dashboard"); // Redirect to dashboard page if login is successful
+    // } else {
+    //   setError("Invalid credentials. Please try again.");
+    // }
   };
 
   return (
