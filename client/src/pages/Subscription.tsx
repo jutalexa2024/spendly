@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/subscription.css";
 import {
   Button,
@@ -16,45 +16,72 @@ import {
   Radio,
   RadioGroup,
   Stack,
-  Select
+  Select,
+  Spinner,
+  Alert,
+  AlertIcon
 } from "@chakra-ui/react";
+import { 
+  useGetUserSubscriptions, 
+  useCreateSubscription, 
+  useUpdateSubscription, 
+  useDeleteSubscription
+} from "../hooks/useSubscription";
+import authService from "../utils/auth";
+
 
 type Subscription = {
-    name: string;
-    status: "Active" | "Inactive";
-    cycle: "Monthly" | "Annually";
-    cost: number;
-    paymentStatus: "Paid" | "Unpaid"
-    dueDate: string;
-  }; 
+  _id?: string;
+  name: string;
+  status: "Active" | "Inactive";
+  cycle: "Monthly" | "Annually";
+  cost: number;
+  paymentStatus: "Paid" | "Unpaid";
+  dueDate: string;
+};
 
 const SubscriptionPage = () => {
   
-  // Mock data to populate Subscription table
+  const userProfile = authService.loggedIn() ? authService.getProfile() : null;
+  const username = userProfile?.data?.username || "guest";
+  
+  // Apollo hooks
+  const { loading, error, data } = useGetUserSubscriptions(username);
+  const [createSubscription, { loading: createLoading }] = useCreateSubscription();
+  const [updateSubscription, { loading: updateLoading }] = useUpdateSubscription();
+  const [deleteSubscription, { loading: deleteLoading }] = useDeleteSubscription();
+  
+  
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([
     { name: "Netflix", status: "Active", cycle: "Monthly", cost: 15.99, paymentStatus: "Unpaid", dueDate: "2025-04-15"},
     { name: "Spotify", status: "Inactive", cycle: "Monthly", cost: 9.99, paymentStatus: "Unpaid", dueDate: "2025-04-10" },
     { name: "Hulu", status: "Active", cycle: "Monthly", cost: 9.99, paymentStatus: "Unpaid", dueDate: "2025-04-20" },
     { name: "Microsoft 365", status: "Active", cycle: "Annually", cost: 99.99, paymentStatus: "Unpaid", dueDate: "2025-06-01" },
     { name: "Amazon Prime", status: "Active", cycle: "Annually", cost: 100.00, paymentStatus: "Unpaid", dueDate: "2025-07-06"},
-    { name: "HBO Max", status: "Inactive", cycle: "Monthly", cost: 15.99, paymentStatus: "Unpaid", dueDate: "2025-04-18" },
+    { name: "HBO Max", status: "Inactive", cycle: "Monthly", cost: 15.99, paymentStatus: "Unpaid", dueDate: "2025-04-18" }
   ]);
+  
+  useEffect(() => {
+    if (data && data.getUserSubscriptions) {
+      setSubscriptions(data.getUserSubscriptions);
+    }
+  }, [data]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   
-  // This is setting a state variable for adding New Subscription
+  
   const [newSubscription, setNewSubscription] = useState<Subscription>({
     name: "",
     status: "Active",
     cycle: "Monthly",
     cost: 0.00,
     paymentStatus: "Unpaid",
-    dueDate: "",
+    dueDate: new Date().toISOString().split("T")[0],
   });
 
-  // This is setting a state variable for Editing (information held) Subscription
+  
   const [selectedSubscription, setSelectedSubscription] = useState<Subscription>({
     name: "",
     status: "Active",
@@ -64,57 +91,56 @@ const SubscriptionPage = () => {
     dueDate: "",
   });
   
-  // Error messages for when user add a new subscription or edit it.
-  const [errorMessage, setErrorMessage] = useState(""); // Add Subscription Modal
-  const [editErrorMessage, setEditErrorMessage] = useState(""); // Edit modal message
+  
+  const [errorMessage, setErrorMessage] = useState("");
+  const [editErrorMessage, setEditErrorMessage] = useState("");
 
+  
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] = useState(false);
 
+  
   const openEditModal = (subscription: Subscription) => {
-    setSelectedSubscription(subscription); // Populate the state with row data
-    setIsEditModalOpen(true); // Open the modal
+    setSelectedSubscription(subscription);
+    setIsEditModalOpen(true);
   };
 
   const closeEditModal = () => setIsEditModalOpen(false);
-
-  const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] = useState(false);
-
   const openDeleteConfirmModal = () => setIsDeleteConfirmModalOpen(true);
   const closeDeleteConfirmModal = () => setIsDeleteConfirmModalOpen(false);
 
-
-  // This block of code will handle the submitted inputs from Modal window
-  const handleInputChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+  
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    // Checking if Cost input is valid
+    
     if (name === "cost") {
       if (value.trim() === "") {
-        setErrorMessage("Cost cannot be empty."); // Set an error message for empty input
+        setErrorMessage("Cost cannot be empty.");
         return;
       }
 
       const costValue = parseFloat(value);
 
-      // Check if the cost is not a number or is a negaive number
       if (isNaN(costValue) || costValue < 0) {
         setErrorMessage("Invalid cost. Please provide a valid positive number.");
-        return; // Prevent invalid updates
+        return;
       }
-      setErrorMessage(""); // Clear the error message
-      setNewSubscription((prev) => ({ ...prev, [name]: costValue, })); // Update the cost as a number
+      
+      setErrorMessage("");
+      setNewSubscription((prev) => ({ ...prev, [name]: costValue }));
     } else {
-      setNewSubscription((prev) => ({ ...prev, [name]: value, }));
+      setNewSubscription((prev) => ({ ...prev, [name]: value }));
     }
   };
 
-  // Handle changes for "Edit Subscription" modal
+ 
   const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
     if (name === "name") {
       if (value.trim() === "") {
-        setEditErrorMessage("Please provide a subscription name."); // Set an error message for empty input
+        setEditErrorMessage("Please provide a subscription name.");
         return;
       }
     }
@@ -124,22 +150,22 @@ const SubscriptionPage = () => {
         setEditErrorMessage("Cost cannot be empty");
         return;
       }
+      
       const costValue = parseFloat(value);
 
       if (isNaN(costValue) || costValue < 0) {
-        setEditErrorMessage("Invalid cost. Please provide a valid positive number."); // Set error for invalid numbers
+        setEditErrorMessage("Invalid cost. Please provide a valid positive number.");
         return;
       }
 
-      setEditErrorMessage(""); // Clear error message if input is valid
-      setSelectedSubscription((prev) => ({...prev, [name]: costValue, })); // Update the cost as a number
-  
+      setEditErrorMessage("");
+      setSelectedSubscription((prev) => ({ ...prev, [name]: costValue }));
     } else {
-      setSelectedSubscription((prev) => ({ ...prev, [name]: value, }));
+      setSelectedSubscription((prev) => ({ ...prev, [name]: value }));
     }
-
   };
 
+  
   const handleStatusChange = (status: "Active" | "Inactive") => {
     setNewSubscription((prev) => ({ ...prev, status }));
   };
@@ -156,75 +182,148 @@ const SubscriptionPage = () => {
     setSelectedSubscription((prev) => ({ ...prev, cycle }));
   };
 
-
-  const handleAddSubscription = () => {
+  // Add subscription
+  const handleAddSubscription = async () => {
     if (newSubscription.name.trim() === "") {
-      setErrorMessage("Subscription name cannot be empty."); // Set an error message for empty input
+      setErrorMessage("Subscription name cannot be empty.");
       return;
     }
-      
 
     if (isNaN(newSubscription.cost) || newSubscription.cost === null || newSubscription.cost <= 0) {
-        setErrorMessage("Invalid cost. Please provide a valid positive number.");
-        return;
-    }
-
-    setErrorMessage(""); // Clear error message if input is valid
-    setSubscriptions([...subscriptions, newSubscription]); // Add new subscription to the state
-    setNewSubscription({ name: "", status: "Active", cycle: "Monthly", cost: 0.00, paymentStatus: "Unpaid", dueDate: new Date().toISOString().split("T")[0] }); // Reset the form
-    onClose(); // Close the modal window
-  };
-
-  // Save edits to the selected subscription
-  const handleSaveEditSubscription = () => {
-    if (selectedSubscription.name.trim() === "") {
-      setErrorMessage("Subscription name cannot be empty."); // Set an error message for empty input
-      return;
-    }
-
-
-    if (isNaN(selectedSubscription.cost) || selectedSubscription.cost === null || selectedSubscription.cost <= 0) {
       setErrorMessage("Invalid cost. Please provide a valid positive number.");
       return;
     }
 
-    setEditErrorMessage("");  // Clear error message if input is valid
-    setSubscriptions((prev) =>
-      prev.map((subscription) =>
-        subscription.name === selectedSubscription.name ? selectedSubscription : subscription
-      )
-    );
-    closeEditModal(); // Close the modal
+    setErrorMessage("");
+    
+    try {
+      if (authService.loggedIn()) {
+        await createSubscription({
+          variables: {
+            username,
+            subscription: newSubscription
+          }
+        });
+      } else {
+        
+        setSubscriptions([...subscriptions, newSubscription]);
+      }
+      
+      setNewSubscription({
+        name: "",
+        status: "Active",
+        cycle: "Monthly",
+        cost: 0.00,
+        paymentStatus: "Unpaid",
+        dueDate: new Date().toISOString().split("T")[0]
+      });
+      
+      onClose();
+    } catch (err: any) {
+      console.error("Error creating subscription:", err);
+      setErrorMessage(`Failed to create subscription: ${err.message}`);
+    }
   };
 
-  const handleDeleteSubscription = () => {
-    setSubscriptions((prev) =>
-      prev.filter(
-        (subscription) =>
+  
+  const handleSaveEditSubscription = async () => {
+    if (selectedSubscription.name.trim() === "") {
+      setEditErrorMessage("Subscription name cannot be empty.");
+      return;
+    }
+
+    if (isNaN(selectedSubscription.cost) || selectedSubscription.cost === null || selectedSubscription.cost <= 0) {
+      setEditErrorMessage("Invalid cost. Please provide a valid positive number.");
+      return;
+    }
+
+    setEditErrorMessage("");
+    
+    try {
+      if (authService.loggedIn() && selectedSubscription._id) {
+        await updateSubscription({
+          variables: {
+            _id: selectedSubscription._id,
+            subscription: {
+              name: selectedSubscription.name,
+              status: selectedSubscription.status,
+              cycle: selectedSubscription.cycle,
+              cost: selectedSubscription.cost,
+              paymentStatus: selectedSubscription.paymentStatus,
+              dueDate: selectedSubscription.dueDate
+            }
+          }
+        });
+      } else {
+        
+        setSubscriptions(prev => prev.map(subscription => 
+          subscription.name === selectedSubscription.name ? selectedSubscription : subscription
+        ));
+      }
+      
+      closeEditModal();
+    } catch (err: any) {
+      console.error("Error updating subscription:", err);
+      setEditErrorMessage(`Failed to update subscription: ${err.message}`);
+    }
+  };
+
+  
+  const handleDeleteSubscription = async () => {
+    try {
+      if (authService.loggedIn() && selectedSubscription._id) {
+        await deleteSubscription({
+          variables: {
+            _id: selectedSubscription._id,
+            username 
+          }
+        });
+      } else {
+        
+        setSubscriptions(prev => prev.filter(subscription => 
           subscription.name !== selectedSubscription.name
-      )
-    );
-    closeEditModal(); // Close the modal after deletion
+        ));
+      }
+      
+      closeDeleteConfirmModal();
+      closeEditModal();
+    } catch (err: any) {
+      console.error("Error deleting subscription:", err);
+      setEditErrorMessage(`Failed to delete subscription: ${err.message}`);
+    }
   };
-
 
   return (
     <div>
       <h1 className="page-title">My Subscription</h1>
+      
+      {/* Loading state */}
+      {loading && <div className="loading-container"><Spinner size="xl" color="blue.500" /></div>}
+      
+      {/* Error state */}
+      {error && (
+        <Alert status="error" borderRadius="md" mb={4}>
+          <AlertIcon />
+          Error loading subscriptions: {error.message}
+        </Alert>
+      )}
+      
       <div className="add-button-container">
         <Button
           bg="rgb(0, 140, 233)"
           color="white"
           _hover={{ bg: "rgb(46, 204, 113)" }}
           onClick={onOpen}
+          isLoading={createLoading}
         >
           Add Subscription +
         </Button>
       </div>
+      
       <div className="subscription-container">
         {subscriptions.length === 0 ? (
           <div className="no-subscriptions-message">
-            <h2>There Are No Subscription</h2>
+            <h2>There Are No Subscriptions</h2>
           </div>
         ) : (
           <>
@@ -233,16 +332,17 @@ const SubscriptionPage = () => {
               <span className="subscription-header-status">Status</span>
               <span className="subscription-header-cycle">Payment Cycle</span>
               <span className="subscription-header-cost">Amount</span>
-              <span className="subscription-header-edit"></span>{" "}  {/*Empty for table alignment purpose*/}
+              <span className="subscription-header-edit"></span>
             </div>
             {subscriptions.map((subscription, index) => (
-              <div className="subscription-row" key={index}>
+              <div className="subscription-row" key={subscription._id || index}>
                 <span className="subscription-name">{subscription.name}</span>
                 <span 
-                  className= {
+                  className={
                     subscription.status === "Active" ? "status-active" : "status-inactive"
                   }
-                > {subscription.status}
+                >
+                  {subscription.status}
                 </span>
                 <span className="subscription-cycle">{subscription.cycle}</span>
                 <span className="subscription-cost">${subscription.cost.toFixed(2)}</span>
@@ -251,6 +351,7 @@ const SubscriptionPage = () => {
                   color="white"
                   _hover={{ bg: "rgb(46, 204, 113)" }}
                   onClick={() => openEditModal(subscription)}
+                  isLoading={updateLoading}
                 >
                   Edit
                 </Button>
@@ -260,7 +361,7 @@ const SubscriptionPage = () => {
         )}
       </div>
 
-      {/* Chakra-UI Modal for the "Add Subscription button"*/}
+      {/* Add Subscription Modal */}
       <Modal
         initialFocusRef={initialRef}
         finalFocusRef={finalRef}
@@ -318,6 +419,17 @@ const SubscriptionPage = () => {
                 placeholder="0.00"
               />
             </FormControl>
+            
+            <FormControl mt={4}>
+              <FormLabel>Due Date</FormLabel>
+              <Input
+                name="dueDate"
+                type="date"
+                value={newSubscription.dueDate}
+                onChange={handleInputChange}
+              />
+            </FormControl>
+            
             {errorMessage && (
               <div style={{ color: "red", marginTop: "8px" }}>
                 {errorMessage}
@@ -326,7 +438,7 @@ const SubscriptionPage = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleAddSubscription}>
+            <Button colorScheme="blue" mr={3} onClick={handleAddSubscription} isLoading={createLoading}>
               Add
             </Button>
             <Button onClick={onClose}>Cancel</Button>
@@ -334,7 +446,7 @@ const SubscriptionPage = () => {
         </ModalContent>
       </Modal>
 
-      {/* Chakra-UI Modal for the "Edit button"*/}
+      {/* Edit Subscription Modal */}
       <Modal isOpen={isEditModalOpen} onClose={closeEditModal}>
         <ModalOverlay />
         <ModalContent>
@@ -389,6 +501,17 @@ const SubscriptionPage = () => {
                 placeholder="0.00"
               />
             </FormControl>
+            
+            <FormControl mt={4}>
+              <FormLabel>Due Date</FormLabel>
+              <Input
+                name="dueDate"
+                type="date"
+                value={selectedSubscription.dueDate}
+                onChange={handleEditInputChange}
+              />
+            </FormControl>
+            
             {editErrorMessage && (
               <div style={{ color: "red", marginTop: "8px" }}>
                 {editErrorMessage}
@@ -401,10 +524,11 @@ const SubscriptionPage = () => {
               colorScheme="blue"
               mr={3}
               onClick={handleSaveEditSubscription}
+              isLoading={updateLoading}
             >
               Update
             </Button>
-            <Button colorScheme="red" mr={3} onClick={openDeleteConfirmModal}>
+            <Button colorScheme="red" mr={3} onClick={openDeleteConfirmModal} isLoading={deleteLoading}>
               Delete
             </Button>
             <Button onClick={closeEditModal}>Cancel</Button>
@@ -412,7 +536,7 @@ const SubscriptionPage = () => {
         </ModalContent>
       </Modal>
 
-      {/* Chakra-UI Modal for the "Delete Confirm button"*/}
+      {/* Delete Confirmation Modal */}
       <Modal
         isOpen={isDeleteConfirmModalOpen}
         onClose={closeDeleteConfirmModal}
@@ -422,21 +546,18 @@ const SubscriptionPage = () => {
           <ModalHeader>Confirm Deletion</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            Are you sure you want to delete this subscription?
+            Are you sure you want to delete the subscription "{selectedSubscription.name}"?
           </ModalBody>
           <ModalFooter>
             <Button
               colorScheme="red"
               mr={3}
-              onClick={() => {
-                // Delete the subscription
-                handleDeleteSubscription(); // Close confirmation modal
-                closeDeleteConfirmModal(); // Close edit modal
-              }}
+              onClick={handleDeleteSubscription}
+              isLoading={deleteLoading}
             >
-              Yes
+              Yes, Delete
             </Button>
-            <Button onClick={closeDeleteConfirmModal}>No</Button>
+            <Button onClick={closeDeleteConfirmModal}>Cancel</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
