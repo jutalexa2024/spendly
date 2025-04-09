@@ -103,9 +103,9 @@ const SubscriptionPage = () => {
         return; // Prevent invalid updates
       }
       setErrorMessage(""); // Clear the error message
-      setNewSubscription((prev) => ({ ...prev, [name]: costValue, })); // Update the cost as a number
+      setNewSubscriptiaon((prev) => ({ ...prev, [name]: costValue, })); // Update the cost as a number
     } else {
-      setNewSubscription((prev) => ({ ...prev, [name]: value, }));
+      setNewSubscriptiaon((prev) => ({ ...prev, [name]: value, }));
     }
   };
 
@@ -142,7 +142,7 @@ const SubscriptionPage = () => {
   };
 
   const handleStatusChange = (status: "Active" | "Inactive") => {
-    setNewSubscription((prev) => ({ ...prev, status }));
+    setNewSubscriptiaon((prev) => ({ ...prev, status }));
   };
 
   const handleEditStatusChange = (status: "Active" | "Inactive") => {
@@ -150,7 +150,7 @@ const SubscriptionPage = () => {
   };
 
   const handleCycleChange = (cycle: "Monthly" | "Annually") => {
-    setNewSubscription((prev) => ({ ...prev, cycle }));
+    setNewSubscriptiaon((prev) => ({ ...prev, cycle }));
   };
 
   const handleEditCycleChange = (cycle: "Monthly" | "Annually") => {
@@ -172,7 +172,7 @@ const SubscriptionPage = () => {
 
     setErrorMessage(""); // Clear error message if input is valid
     setSubscriptions([...subscriptions, newSubscription]); // Add new subscription to the state
-    setNewSubscription({ name: "", status: "Active", cycle: "Monthly", cost: 0.00, paymentStatus: "Unpaid", dueDate: new Date().toISOString().split("T")[0] }); // Reset the form
+    setNewSubscriptiaon({ name: "", status: "Active", cycle: "Monthly", cost: 0.00, paymentStatus: "Unpaid", dueDate: new Date().toISOString().split("T")[0] }); // Reset the form
     onClose(); // Close the modal window
   };
 
