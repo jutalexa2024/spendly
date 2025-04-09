@@ -1,7 +1,9 @@
 import "../styles/dashboard.css";
 
+
 const Dashboard = () => {
   return (
+    <div className="dashboard-wrapper">
     <div className="dashboard-container">
       <h1>About Spendly</h1>
       <p>Having trouble keeping up with your subscriptions or what bills are due and when? 
@@ -9,6 +11,7 @@ const Dashboard = () => {
         You can add, edit, and delete subscriptions and bills, and you can also see a list of all them in one place. 
         Spendly is the perfect app for anyone who wants to take control of their finances and stay on top of their bills.
         </p>
+        </div>
     </div>
   );
 }

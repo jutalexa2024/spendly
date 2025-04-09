@@ -5,7 +5,7 @@ import './index.css';
 
 // import AboutPage from './pages/About.tsx'
 import BillsPage from './pages/Bills';
-// import Dashboard from './pages/Dashboard.tsx';
+import Dashboard from './pages/Dashboard';
 import LoginPage from './pages/Login';
 import SignUpPage from './pages/Signup';
 import Subscription from './pages/Subscription';
@@ -13,9 +13,6 @@ import Subscription from './pages/Subscription';
 import App from './App';
 import HomePage from './pages/Home';
 import ErrorPage from './pages/ErrorPage';
-import Dashboard from './pages/Dashboard';
-
-
 
 const router = createBrowserRouter([
   {
@@ -27,6 +24,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <HomePage />,
       },
+    //   {
+    //     path: "/about",
+    //     element: <AboutPage />,
+    //   },
       {
         path: "/dashboard",
         element: <Dashboard />,

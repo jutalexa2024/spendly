@@ -30,11 +30,13 @@ const Signup = () => {
     }
 
     // TODO: Replace with API call to backend for user creation
-    if (email === "newuser@email.com") {
-      navigate("/subscription"); // Redirect to dashboard page upon successful sign-up
-    } else {
-      setError("An error occurred during sign-up. Please try again.");
+    try {
+      localStorage.setItem("signupData", JSON.stringify({ username, email, password }));
+      navigate("/login");
+    } catch (err) {
+      setError("An error occurred during sign-up. Please try again."); 
     }
+
   };
 
   return (
