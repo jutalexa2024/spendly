@@ -13,6 +13,8 @@ const NavLinks = () => {
         <Link to="/subscription">Subscription</Link>
         <Link to="/bills">Bills</Link>
         <Link to="/login">Login</Link>
+        <Link to="/signup">Sign Up</Link>
+
   
       </nav>
     );
@@ -30,6 +32,7 @@ const NavLinks = () => {
       <Link to="/">Home</Link>
       <Link to="/dashboard">Dashboard</Link>
       <Link to="/subscription">Subscription</Link>
+      <Link to="/signup">Sign Up</Link>
       <Link to="/bills">Bills</Link>
       {user? (
         <div className="user-section">
