@@ -1,8 +1,9 @@
+
 import { User, Bill, Subscription } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
 
 interface AddUserArgs {
-  input:{
+  input: {
     username: string;
     email: string;
     password: string;
@@ -17,7 +18,7 @@ interface User {
 }
 
 interface UserArgs {
-  _id: number;
+  user_id: number;
 }
 
 interface AddBillArgs {
@@ -35,22 +36,36 @@ interface AddSubscriptionArgs {
 }
 
 interface Context {
-  user?: User; 
+  user?: User;
+}
+
+
+interface SubscriptionInput {
+  name: string;
+  status: string;
+  cycle: string;
+  cost: number;
+  paymentStatus: string;
+  dueDate: string;
 }
 
 const resolvers = {
   Query: {
     users: async () => await User.find(),
     bills: async () => await Bill.find(),
-    user: async (_parent: unknown, { _id }: UserArgs): Promise<User | null> => {
-      // Retrieve a profile by its ID
-      return await User.findOne({ user_id: _id });
+    user: async (_parent: unknown, { user_id }: UserArgs): Promise<User | null> => {
+      return await User.findOne({ user_id: user_id });
     },
     subscriptions: async () => await Subscription.find(),
     
     userBills: async (_parent: unknown, { username }: { username: string }) => {
       return await Bill.find({ username });
     },
+    
+    getUserSubscriptions: async (_parent: unknown, { username }: { username: string }) => {
+      return await Subscription.find({ username });
+    },
+    
     bill: async (_parent: unknown, { id }: { id: string }) => {
       return await Bill.findById(id);
     },
@@ -59,10 +74,8 @@ const resolvers = {
     },
     me: async (_parent: unknown, _args: unknown, context: Context): Promise<User | null> => {
       if (context.user) {
-        // If user is authenticated, return their profile
         return await User.findOne({ _id: context.user.user_id });
       }
-      // If not authenticated, throw an authentication error
       throw new AuthenticationError('Not Authenticated');
     },
   },
@@ -70,16 +83,16 @@ const resolvers = {
   Mutation: {
     addUser: async (_parent: any, { input }: AddUserArgs) => {
       const user = await User.create({ ...input });
-    
-      const token = signToken(user.username, user.email, user._id);
-    
+      const token = signToken(user.username, user.email, user.user_id);
       return { token, user };
     },
+    
     addBill: async (_: any, { username, category, name, amount, dueDate }: AddBillArgs) => {
       const bill = new Bill({ username, category, name, amount, dueDate });
       await bill.save();
       return bill;
     },
+    
     addSubscription: async (_: any, { username, cost, renewalDate }: AddSubscriptionArgs) => {
       const subscription = new Subscription({ username, cost, renewalDate });
       await subscription.save();
@@ -87,24 +100,60 @@ const resolvers = {
     },
 
     login: async (_parent: unknown, { email, password }: { email: string; password: string }): Promise<{ token: string; user: User }> => {
-      // Find a profile by email
       const user = await User.findOne({ email });
 
       if (!user) {
         throw new AuthenticationError('Invalid credentials, No Email Exists');
       }
 
-      // Check if the provided password is correct
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
         throw new AuthenticationError('Invalid credentials, Incorrect Password');
       }
 
-      // Sign a JWT token for the authenticated profile
       const token = signToken(user.username, user.email, user.user_id);
       return { token, user };
     },
+    
+    // New subscription mutations
+    createSubscription: async (_parent: unknown, { username, subscription }: { username: string, subscription: SubscriptionInput }) => {
+      const newSubscription = new Subscription({
+        ...subscription,
+        username
+      });
+      await newSubscription.save();
+      return newSubscription;
+    },
+    
+    updateSubscription: async (_parent: unknown, { _id, subscription }: { _id: string, subscription: SubscriptionInput }) => {
+      return await Subscription.findByIdAndUpdate(
+        _id,
+        { $set: subscription },
+        { new: true }
+      );
+    },
+    
+    deleteSubscription: async (_parent: unknown, { _id }: { _id: string }) => {
+      await Subscription.findByIdAndDelete(_id);
+      return true;
+    },
+    
+    updateSubscriptionStatus: async (_parent: unknown, { _id, status }: { _id: string; status: string }) => {
+      return await Subscription.findByIdAndUpdate(
+        _id,
+        { $set: { status } },
+        { new: true }
+      );
+    },
+    
+    updateSubscriptionPaymentStatus: async (_parent: unknown, { _id, paymentStatus }: { _id: string; paymentStatus: string }) => {
+      return await Subscription.findByIdAndUpdate(
+        _id,
+        { $set: { paymentStatus } },
+        { new: true }
+      );
+    }
   },
 };
 
