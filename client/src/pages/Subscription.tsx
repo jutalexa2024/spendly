@@ -72,9 +72,8 @@ const SubscriptionPage = () => {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   
-  // This is setting a state variable for adding New Subscription
-  // This is setting a state variable for adding New Subscription
-  const [newSubscription, setNewSubscription] = useState<Subscription>({
+  
+  const [newSubscription, setNewSubscriptiaon] = useState<Subscription>({
     name: "",
     status: "Active",
     cycle: "Monthly",
@@ -130,9 +129,9 @@ const SubscriptionPage = () => {
       }
       
       setErrorMessage(""); // Clear the error message
-      setNewSubscription((prev) => ({ ...prev, [name]: costValue })); // Update the cost as a number
+      setNewSubscriptiaon((prev) => ({ ...prev, [name]: costValue, })); // Update the cost as a number
     } else {
-      setNewSubscription((prev) => ({ ...prev, [name]: value }));
+      setNewSubscriptiaon((prev) => ({ ...prev, [name]: value, }));
     }
   };
 
@@ -197,35 +196,9 @@ const SubscriptionPage = () => {
     }
 
     setErrorMessage(""); // Clear error message if input is valid
-    
-    try {
-      if (authService.loggedIn()) {
-        await createSubscription({
-          variables: {
-            username,
-            subscription: newSubscription
-          }
-        });
-      } else {
-        // For non-logged in users, just update local state
-        setSubscriptions([...subscriptions, newSubscription]);
-      }
-      
-      setNewSubscription({
-        name: "",
-        status: "Active",
-        cycle: "Monthly",
-        cost: 0.00,
-        paymentStatus: "Unpaid",
-        dueDate: new Date().toISOString().split("T")[0]
-      });
-      
-      onClose(); // Close the modal window
-    } catch (err: any) {
-      console.error("Error creating subscription:", err);
-      setErrorMessage(`Failed to create subscription: ${err.message}`);
-    }
-  };
+    setSubscriptions([...subscriptions, newSubscription]); // Add new subscription to the state
+    setNewSubscriptiaon({ name: "", status: "Active", cycle: "Monthly", cost: 0.00, paymentStatus: "Unpaid", dueDate: new Date().toISOString().split("T")[0] }); // Reset the form
+    onClose();
 
   
   const handleSaveEditSubscription = async () => {
