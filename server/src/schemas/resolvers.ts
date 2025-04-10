@@ -26,7 +26,7 @@ interface AddBillArgs {
   category: string;
   name: string;
   amount: number;
-  dueDate: string;
+  dueDate: Date;
 }
 
 interface AddSubscriptionArgs {

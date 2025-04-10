@@ -78,7 +78,7 @@ const typeDefs = `
   type Mutation {
     addUser(input: UserInput!): Auth
     login(email: String!, password: String!): Auth
-    addBill(username: String!, category: String!, name: String!, amount: Float!, dueDate: String!): Bill
+    addBill(username: String!, category: String!, name: String!, amount: Float!, dueDate: Date!): Bill
     deleteBill(id: ID!): Bill
     addSubscription(username: String!, cost: Float!, renewalDate: String!): Subscription
     
