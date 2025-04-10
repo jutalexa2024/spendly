@@ -161,6 +161,14 @@ const BillsPage: React.FC = () => {
         <h2 className="subscriptions-card-title">Bills</h2>
         {data?.userBills?.length > 0 ? (
           <div>
+            <div className="subscriptions-row header-row">
+              <span><strong>Name</strong></span>
+              <span><strong>Category</strong></span>
+              <span><strong>Amount</strong></span>
+              <span><strong>Due Date</strong></span>
+              <span><strong>Status</strong></span>
+              <span><strong>Action</strong></span>
+            </div>
             {data.userBills.map((bill: any) => {
               const { formattedDate, dueStatus } = getDueDetails(bill.dueDate);
 
