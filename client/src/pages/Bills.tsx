@@ -1,6 +1,31 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AppContext } from "../App";
+import {
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Input,
+  useDisclosure,
+  FormControl,
+  FormLabel,
+} from "@chakra-ui/react";
+
 import "../styles/bills.css";
+
+type Subscription = {
+  name: string;
+  status: "Active" | "Inactive";
+  cycle: "Monthly" | "Annually";
+  cost: number;
+  paymentStatus: "Paid" | "Unpaid"
+  dueDate: string;
+  category: string;
+}; 
 
 const BillsPage: React.FC = () => {
   const context = useContext(AppContext);
@@ -11,6 +36,163 @@ const BillsPage: React.FC = () => {
   const activeSubscriptions = subscriptions.filter(
     (sub) => sub.status === "Active"
   );
+
+  
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const initialRef = React.useRef(null);
+  const finalRef = React.useRef(null);
+
+  const defaultBillState: Subscription = {
+    name: "",
+    status: "Active",
+    paymentStatus: "Unpaid",
+    cycle: "Monthly",
+    cost: 0.0,
+    dueDate: "",
+    category: "",
+  };
+  
+  // This is setting a state variable for adding and editing Bills
+  const [newBill, setNewBill] = useState<Subscription>(defaultBillState);
+  const [editBill, setEditBill] = useState<Subscription>(defaultBillState);
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // For the Edit modal
+
+
+  // Error messages for when user add a new bill or edit it.
+  const [errorMessage, setErrorMessage] = useState(""); // Add Subscription Modal
+  const [editErrorMessage, setEditErrorMessage] = useState(""); // Edit modal message
+
+  const handleModalClose = () => {
+    setNewBill(defaultBillState);
+    setErrorMessage("");
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNewBill((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleAddBill = () => {
+
+    const duplicate = subscriptions.some(
+      (sub) => sub.name.trim().toLowerCase() === newBill.name.trim().toLowerCase()
+    );
+
+    if (duplicate) {
+      setErrorMessage("This bill already exists.");
+      return;
+    }
+
+    if (newBill.name.trim() === "" && newBill.dueDate === "" && newBill.category === "") {
+      setErrorMessage("All fields are required");
+      return;
+    }
+    if (newBill.name.trim() === "") {
+      setErrorMessage("Please enter a valid name and due date for the bill.");
+      return;
+    }
+
+    if (newBill.dueDate === "") {
+      setErrorMessage("Date need to be selected.");
+      return;
+    }
+
+    if (newBill.category === "") {
+      setErrorMessage("Please Enter a Category.");
+      return;
+    }
+
+    if (newBill.cost <= 0){
+      setErrorMessage("Amount must be greater than 0.");
+      return;
+    }
+
+    const formattedBill: Subscription = {
+      name: newBill.name.trim(),
+      status: newBill.status as "Active" | "Inactive", // Ensure literal type
+      paymentStatus: newBill.paymentStatus as "Paid" | "Unpaid", // Ensure literal type
+      cycle: newBill.cycle as "Monthly" | "Annually", // Ensure literal type
+      cost: Number(newBill.cost), // Ensure cost is a number
+      dueDate: newBill.dueDate, // Keep as string
+      category: newBill.category.trim(),
+    };
+  
+
+    setSubscriptions((prev) => [...prev, formattedBill]);
+    setErrorMessage(""); // Clear any existing error
+    handleModalClose();
+  };
+
+  const handleEditModalOpen = (subscription: typeof editBill) => {
+    setEditBill(subscription); // Prefill modal with subscription data
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditModalClose = () => {
+    setIsEditModalOpen(false);
+    setEditBill(defaultBillState); // Reset modal state
+    setEditErrorMessage("");
+  };
+
+  const handleEditInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setEditBill((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSaveChanges = () => {
+
+    
+    const formattedEditBill: Subscription = {
+      name: editBill.name.trim(),
+      status: editBill.status as "Active" | "Inactive", // Ensure literal type
+      paymentStatus: editBill.paymentStatus as "Paid" | "Unpaid", // Ensure literal type
+      cycle: editBill.cycle as "Monthly" | "Annually", // Ensure literal type
+      cost: Number(editBill.cost), // Ensure cost is a number
+      dueDate: editBill.dueDate, 
+      category: editBill.category.trim(),
+    };
+
+    if (editBill.name.trim() === "") {
+      setEditErrorMessage("Please enter a Name.");
+      return;
+    }
+
+    if (editBill.dueDate === "") {
+      setEditErrorMessage("Date must be selected.");
+      return;
+    }
+
+    if (editBill.category === "") {
+      setEditErrorMessage("Please Enter a Category.");
+      return;
+    }
+
+    if (editBill.cost <= 0){
+      setEditErrorMessage("Amount must be greater than 0.");
+      return;
+    }
+
+    const duplicate = subscriptions.some(
+      (sub) => sub.name.trim().toLowerCase() === editBill.name.trim().toLowerCase() && sub.name !== editBill.name
+    );
+
+    if (duplicate) {
+      setEditErrorMessage("A bill with this name already exists.");
+      return;
+    }
+
+    setSubscriptions((prev) =>
+      prev.map((sub) =>
+        sub.name === editBill.name ? { ...formattedEditBill } : sub
+      )
+    );
+    handleEditModalClose();
+  };
+
 
   const getUpcomingBills = () => {
     const today = new Date();
@@ -107,11 +289,24 @@ const BillsPage: React.FC = () => {
         )}
       </div>
 
+      {/* Add Bill + Button  */}
+      <div className="add-bills-button-container">
+        <Button
+          bg="rgb(0, 140, 233)"
+          color="white"
+          _hover={{ bg: "rgb(46, 204, 113)" }}
+          onClick={onOpen}
+        >
+          Add Bills +
+        </Button>
+      </div>
+
       {/* Subscriptions Table */}
       <div className="subscriptions-card-container">
         <h2 className="subscriptions-card-title">Subscription Bills</h2>
         <div className="subscriptions-table-header">
           <span className="subscriptions-header-name">Name</span>
+          <span className="subscriptions-header-category">Category</span>
           <span className="subscriptions-header-due-Date">Due Date</span>
           <span className="subscriptions-header-past-Due">Past Due</span>
           <span className="subscriptions-header-cost">Amount</span>
@@ -126,6 +321,7 @@ const BillsPage: React.FC = () => {
           return (
             <div key={index} className="subscriptions-row">
               <span className="subscriptions-name">{sub.name}</span>
+              <span className="subscriptions-category">{sub.category}</span>
               <span className="subscriptions-due-date">
                 {dueDate.toLocaleDateString("en-US", {
                   month: "2-digit",
@@ -133,7 +329,9 @@ const BillsPage: React.FC = () => {
                   year: "numeric",
                 })}
               </span>
-              <span className="subscriptions-past-due">{isPastDue ? "Yes" : "No"}</span>
+              <span className="subscriptions-past-due">
+                {isPastDue ? "Yes" : "No"}
+              </span>
               <span className="subscriptions-cost">${sub.cost.toFixed(2)}</span>
               <span className="subscriptions-status">{sub.paymentStatus}</span>
 
@@ -167,6 +365,15 @@ const BillsPage: React.FC = () => {
                 >
                   Unpaid
                 </button>
+
+                <Button
+                  bg="rgb(0, 140, 233)"
+                  color="white"
+                  _hover={{ bg: "rgb(46, 204, 113)" }}
+                  onClick={() => handleEditModalOpen(sub)}
+                >
+                  Edit
+                </Button>
               </div>
             </div>
           );
@@ -205,6 +412,150 @@ const BillsPage: React.FC = () => {
           </div>
         ))}
       </div>
+
+      {/* Chakra-UI Modal for the "Add Bills + button"*/}
+      <Modal
+        initialFocusRef={initialRef}
+        finalFocusRef={finalRef}
+        isOpen={isOpen}
+        onClose={onClose}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Add New Bill</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl>
+              <FormLabel>Name of Bill</FormLabel>
+              <Input
+                name="name"
+                value={newBill.name}
+                onChange={handleInputChange}
+                placeholder="Enter Bill Name"
+              />
+            </FormControl>
+
+            <FormControl mt={4}>
+              <FormLabel>Due Date</FormLabel>
+              <Input
+                name="dueDate"
+                value={newBill.dueDate}
+                onChange={handleInputChange}
+                type="date"
+              />
+            </FormControl>
+
+            <FormControl mt={4}>
+              <FormLabel>Category</FormLabel>
+              <Input
+                name="category"
+                value={newBill.category}
+                onChange={handleInputChange}
+                placeholder="Enter category (e.g., utilities, entertainment)"
+              />
+            </FormControl>
+
+            <FormControl mt={4}>
+              <FormLabel>Amount($)</FormLabel>
+              <Input
+                name="cost"
+                value={newBill.cost}
+                onChange={handleInputChange}
+                type="number"
+                placeholder="0.00"
+              />
+            </FormControl>
+
+            {errorMessage && (
+              <div style={{ color: "red", marginTop: "8px" }}>
+                {errorMessage}
+              </div>
+            )}
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={handleAddBill}>
+              Add
+            </Button>
+            <Button onClick={onClose}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Chakra-UI Modal for the "Edit button"*/}
+      <Modal
+        initialFocusRef={initialRef}
+        finalFocusRef={finalRef}
+        isOpen={isEditModalOpen}
+        onClose={handleEditModalClose}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Edit Bill</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl>
+              <FormLabel>Name of Bill</FormLabel>
+              <Input
+                name="name"
+                value={editBill.name}
+                onChange={handleEditInputChange}
+                placeholder="Enter Bill Name"
+              />
+            </FormControl>
+
+            <FormControl mt={4}>
+              <FormLabel>Due Date</FormLabel>
+              <Input
+                name="dueDate"
+                value={editBill.dueDate}
+                onChange={handleEditInputChange}
+                type="date"
+              />
+            </FormControl>
+
+            <FormControl mt={4}>
+              <FormLabel>Category</FormLabel>
+              <Input
+                name="category"
+                value={editBill.category}
+                onChange={handleEditInputChange}
+                placeholder="Enter category (e.g., utilities, entertainment)"
+              />
+            </FormControl>
+
+            <FormControl mt={4}>
+              <FormLabel>Amount($)</FormLabel>
+              <Input
+                name="cost"
+                value={editBill.cost}
+                onChange={(e) =>
+                  setEditBill((prev) => ({
+                    ...prev,
+                    cost: parseFloat(e.target.value),
+                  }))
+                }
+
+                type="number"
+                placeholder="0.00"
+              />
+            </FormControl>
+
+            {editErrorMessage && (
+              <div style={{ color: "red", marginTop: "8px" }}>
+                {editErrorMessage}
+              </div>
+            )}
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={handleSaveChanges}>
+              Update
+            </Button>
+            <Button onClick={handleEditModalClose}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </div>
   );
 };
