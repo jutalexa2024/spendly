@@ -13,6 +13,7 @@ const NavLinks = () => {
         <Link to="/subscription">Subscription</Link>
         <Link to="/bills">Bills</Link>
         <Link to="/login">Login</Link>
+
   
       </nav>
     );

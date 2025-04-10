@@ -1,10 +1,32 @@
 /* This file is used to style the main body, navbar, header, and footer */
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  display: flex; /* Optional: Add for additional layout control */
+  justify-content: center;
+}
+
+
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: linear-gradient(to right, #00C96D, #0077ff);
-   
+    padding: 10px 20px;
   }
   
   .logo-container {
@@ -40,9 +62,8 @@
     color: black;
     text-align: center;
     padding: 20px;
-    position: relative;
-    bottom: 0;
     width: 100%;
+    margin-top: auto;
   }
 
   .footer-content {

@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-import {Outlet } from "react-router-dom";
+import {Outlet} from "react-router-dom";
 import Header from "./components/header/index";
 import Footer from "./components/footer";
 
@@ -37,13 +37,19 @@ function App() {
   const [user, setUser] = useState<{ username: string } | null>(null);
 
   return (
-    <AppContext.Provider value={{ subscriptions, setSubscriptions, user, setUser}}>
-      <Header />
-      {/* <Navbar /> */}
-      <Outlet /> {/* This is where child pages (Login, Dashboard, etc.) will be displayed */}
-      <Footer />
+    <AppContext.Provider
+      value={{ subscriptions, setSubscriptions, user, setUser }}
+    >
+      <div className="app-layout">
+        <Header />
+        <main className="main-content">
+          <Outlet />{" "}
+          {/* This is where child pages (Login, Dashboard, etc.) will be displayed */}
+        </main>
+        {/* <Navbar /> */}
+        <Footer />
+      </div>
     </AppContext.Provider>
-    
   );
 }
 
