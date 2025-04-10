@@ -6,7 +6,7 @@ export interface IBill extends Document {
     name: string;
     category: string;
     amount: number;
-    dueDate: Date;
+    dueDate: String;
     user_id: Schema.Types.ObjectId;
   }
   
@@ -31,7 +31,7 @@ const billSchema = new Schema<IBill>(
       required: true,
     },
     dueDate: {
-        type: Date,
+        type: String,
         required: true,
     },
     user_id: {

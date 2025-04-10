@@ -39,14 +39,13 @@ const BillsPage: React.FC = () => {
     setFormError("");
 
     try {
-      const isoDate = new Date(newBill.dueDate + "T00:00:00").toISOString();
       await addBill({
         variables: {
           username: user.username,
           name: newBill.name,
           category: newBill.category,
           amount: parseFloat(newBill.amount),
-          dueDate: isoDate
+          dueDate: newBill.dueDate // Send as string
         }
       });
       refetch();
@@ -70,12 +69,12 @@ const BillsPage: React.FC = () => {
     }
   };
 
-  const getDueDetails = (dueDate: string | number) => {
+  const getDueDetails = (dueDate: string) => {
     let formattedDate = "Invalid Date";
     let dueStatus = "";
 
     try {
-      const parsed = new Date(Number(dueDate));
+      const parsed = new Date(dueDate);
       if (!isNaN(parsed.getTime())) {
         const today = new Date();
         const diffTime = parsed.getTime() - today.getTime();
@@ -178,5 +177,6 @@ const BillsPage: React.FC = () => {
 };
 
 export default BillsPage;
+
 
 
