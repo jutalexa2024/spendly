@@ -1,74 +1,70 @@
 import { useState, useContext } from "react";
-import {Link, useNavigate } from "react-router-dom";
-import "../styles/login.css";
+import { useNavigate, Link } from "react-router-dom";
+import { useMutation } from "@apollo/client";
+import { LOGIN } from "../utils/mutations";; // Make sure the path is correct
 import { AppContext } from "../App";
-
+import "../styles/login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  //const [loading, setLoading] = useState(false); // Fix: Added useState for loading
+
   const navigate = useNavigate();
-  
   const context = useContext(AppContext);
+
+  const [login, { loading }] = useMutation(LOGIN);
 
   if (!context) {
     return <p>Error: AppContext not available.</p>;
   }
 
-  const { setUser } = context; // Destructure setUser from AppContext
+  const { setUser } = context;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Clear error when the user starts typing
     setError("");
 
-    // Validation Check for empty fields
     if (!email || !password) {
-      if (!email && !password){
+      if (!email && !password) {
         setError("Please enter both email and password.");
+      } else if (!email) {
+        setError("Please enter a valid email address.");
+      } else {
+        setError("A valid password is required.");
       }
-      else if (!email){
-        setError("Please Enter a valid email address.");
-      } 
-      else {
-        setError("A Valid Password is Required.");
-      } 
       return;
     }
 
-    const signupData = JSON.parse(localStorage.getItem("signupData") || "{}");
+    try {
+      const { data } = await login({
+        variables: { email, password },
+      });
 
-    // TODO: Replace with API call to backend authentication
-    if (email === signupData.email && password === signupData.password) {
-      setUser({ username: signupData.username }); // Use username from signupData to show in the navbar link
-      navigate("/dashboard"); // Redirect if credentials match
-    } else {
-      setError("Invalid credentials. Please try again.");
+      if (data?.login?.token) {
+        // Store the token and update context
+        localStorage.setItem("id_token", data.login.token);
+        setUser({ username: data.login.user.username });
+
+        // Redirect to dashboard
+        navigate("/dashboard");
+      }
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || "Login failed. Please try again.");
     }
-
-    // TODO: Replace with API call to backend authentication
-    // if (email === "myemail@email.com" && password === "password123") {
-    //   setUser({username:"JohnDoe"});
-    //   navigate("/dashboard"); // Redirect to dashboard page if login is successful
-    // } else {
-    //   setError("Invalid credentials. Please try again.");
-    // }
   };
 
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>Login To $pendly</h2>
-        
+
         <label>Email*:</label>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          
         />
 
         <label>Password*:</label>
@@ -78,11 +74,17 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        {error && <p className="error-message">{error}</p>}  {/*This display the error message*/}
+        {error && <p className="error-message">{error}</p>}
 
-        <button type="submit">Login</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
+
         <h3>
-        Don't have an account? <Link to="/signup" className="signup-link">Sign Up</Link>
+          Don't have an account?{" "}
+          <Link to="/signup" className="signup-link">
+            Sign Up
+          </Link>
         </h3>
       </form>
     </div>
@@ -90,5 +92,6 @@ const Login = () => {
 };
 
 export default Login;
+
 
 
