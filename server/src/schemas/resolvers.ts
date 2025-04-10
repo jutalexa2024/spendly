@@ -92,6 +92,10 @@ const resolvers = {
       await bill.save();
       return bill;
     },
+
+    deleteBill: async (_: unknown, { id }: { id: string }) => {
+      return await Bill.findByIdAndDelete(id);
+    },
     
     addSubscription: async (_: any, { username, cost, renewalDate }: AddSubscriptionArgs) => {
       const subscription = new Subscription({ username, cost, renewalDate });

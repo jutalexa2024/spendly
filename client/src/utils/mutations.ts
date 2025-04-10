@@ -121,3 +121,31 @@ export const LOGIN = gql`
     }
   }
 `;
+
+
+export const ADD_BILL = gql`
+  mutation AddBill(
+    $username: String!
+    $category: String!
+    $name: String!
+    $amount: Float!
+    $dueDate: String!
+  ) {
+    addBill(username: $username, category: $category, name: $name, amount: $amount, dueDate: $dueDate) {
+      _id
+      username
+      category
+      name
+      amount
+      dueDate
+    }
+  }
+`;
+
+export const DELETE_BILL = gql`
+  mutation DeleteBill($id: ID!) {
+    deleteBill(id: $id) {
+      _id
+    }
+  }
+`;

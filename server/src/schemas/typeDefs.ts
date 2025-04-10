@@ -79,6 +79,7 @@ const typeDefs = `
     addUser(input: UserInput!): Auth
     login(email: String!, password: String!): Auth
     addBill(username: String!, category: String!, name: String!, amount: Float!, dueDate: String!): Bill
+    deleteBill(id: ID!): Bill
     addSubscription(username: String!, cost: Float!, renewalDate: String!): Subscription
     
     # New subscription mutations

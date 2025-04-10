@@ -51,3 +51,30 @@ export const GET_SUBSCRIPTION_BY_ID = gql`
     }
   }
 `;
+
+
+export const GET_USER_BILLS = gql`
+  query GetUserBills($username: String!) {
+    userBills(username: $username) {
+      _id
+      username
+      category
+      name
+      amount
+      dueDate
+    }
+  }
+`;
+
+export const GET_ALL_BILLS = gql`
+  query GetAllBills {
+    bills {
+      _id
+      username
+      category
+      name
+      amount
+      dueDate
+    }
+  }
+`;
