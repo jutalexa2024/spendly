@@ -22,6 +22,7 @@ export const AppContext = createContext<{
 } | null>(null);
 
 
+
 function App() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([
     { name: "Netflix", status: "Active", paymentStatus: "Unpaid", cycle: "Monthly", cost: 15.99, dueDate: "2025-04-15" },
