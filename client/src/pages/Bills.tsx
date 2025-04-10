@@ -82,7 +82,7 @@ const BillsPage: React.FC = () => {
           value={newBill.dueDate}
           onChange={(e) => setNewBill({ ...newBill, dueDate: e.target.value })}
         />
-        <button onClick={handleAddBill} className="add-bill-btn">Add Bill</button>
+        <button onClick={handleAddBill} className="chakra-button css-1qhwwba">Add Bill</button>
       </div>
 
       <div className="subscriptions-card-container">
@@ -95,7 +95,7 @@ const BillsPage: React.FC = () => {
                 <span>{bill.category}</span>
                 <span>${bill.amount.toFixed(2)}</span>
                 <span>{new Date(bill.dueDate).toLocaleDateString()}</span>
-                <button onClick={() => handleDelete(bill._id)} className="delete-bill-btn">Delete</button>
+                <button onClick={() => handleDelete(bill._id)} className="chakra-button css-1qhwwba">Delete</button>
               </div>
             ))}
           </div>
