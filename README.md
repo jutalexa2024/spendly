@@ -108,7 +108,5 @@ This project is Licensed under the MIT License.
 
 ## Questions
 
-Feel Free to contact me for any additional questions
+Feel Free to contact any of the listed [contributors](#contributing) above for any additional questions
 
-- GitHub: [jbarry89](https://github.com/jbarry89/)
-- Email: joelbarry8907@hotmail.com
