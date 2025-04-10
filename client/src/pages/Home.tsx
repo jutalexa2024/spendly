@@ -11,7 +11,7 @@ const Home = () => {
             <div className="left-column">
       <h1 className="welcome-title">Welcome to Spendly</h1>
       <p>
-        Take control of your subscriptions and bills all in one place! Spendly maked it easy to track, manage, and stay on top of what you pay, so you can focus on what matters most!
+        Take control of your subscriptions and bills all in one place! Spendly makes it easy to track, manage, and stay on top of what you pay, so you can focus on what matters most!
       </p>
       </div>
       <div className="right-column">
