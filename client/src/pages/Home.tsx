@@ -11,14 +11,11 @@ const Home = () => {
             <div className="left-column">
       <h1 className="welcome-title">Welcome to Spendly</h1>
       <p>
-        Having trouble keeping up with your subscriptions or what bills are due and when? 
-        If this is you, then you have come to the right place! Spendly is a simple and easy to use app that helps you keep track of your subscriptions and bills. 
-        You can add, edit, and delete subscriptions and bills, and you can also see a list of all them in one place. 
-        Spendly is the perfect app for anyone who wants to take control of their finances and stay on top of their bills.
+        Take control of your subscriptions and bills all in one place! Spendly makes it easy to track, manage, and stay on top of what you pay, so you can focus on what matters most!
       </p>
       </div>
       <div className="right-column">
-        <img src="/assets/spendly-bills-page.jpg" alt="Preview Image" className="preview-image" />
+      <img src="Spendly-preview-img.png" alt="Preview Image" className="preview-image" />
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://spendly.app" alt="QR Code" className="qr-code" />
         <p>Download This App</p>
         <div className="store-buttons">
