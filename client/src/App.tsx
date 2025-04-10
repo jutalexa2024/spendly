@@ -11,6 +11,7 @@ type Subscription = {
   cycle: "Monthly" | "Annually";
   cost: number;
   dueDate: string;
+  category: string;
 };
 
 // Create a context to provide subscriptions and their updater
@@ -25,12 +26,12 @@ export const AppContext = createContext<{
 
 function App() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([
-    { name: "Netflix", status: "Active", paymentStatus: "Unpaid", cycle: "Monthly", cost: 15.99, dueDate: "2025-04-15" },
-    { name: "Spotify", status: "Inactive", paymentStatus: "Unpaid", cycle: "Monthly", cost: 9.99, dueDate: "2025-04-10" },
-    { name: "Hulu", status: "Active", paymentStatus: "Unpaid", cycle: "Monthly", cost: 9.99, dueDate: "2025-04-20" },
-    { name: "Microsoft 365", status: "Active", paymentStatus: "Paid", cycle: "Annually", cost: 99.99, dueDate: "2025-06-01" },
-    { name: "Amazon Prime", status: "Active", paymentStatus: "Unpaid", cycle: "Annually", cost: 100.0, dueDate: "2025-07-05" },
-    { name: "HBO Max", status: "Inactive", paymentStatus: "Unpaid", cycle: "Monthly", cost: 15.99, dueDate: "2025-04-18" },
+    { name: "Netflix", status: "Active", cycle: "Monthly", cost: 15.99, paymentStatus: "Unpaid", dueDate: "2025-04-15", category: "streaming"},
+    { name: "Spotify", status: "Inactive", cycle: "Monthly", cost: 9.99, paymentStatus: "Unpaid", dueDate: "2025-04-10", category: "music" },
+    { name: "Hulu", status: "Active", cycle: "Monthly", cost: 9.99, paymentStatus: "Unpaid", dueDate: "2025-04-20", category: "streaming" },
+    { name: "Microsoft 365", status: "Active", cycle: "Annually", cost: 99.99, paymentStatus: "Unpaid", dueDate: "2025-06-01", category: "software" },
+    { name: "Amazon Prime", status: "Active", cycle: "Annually", cost: 100.00, paymentStatus: "Unpaid", dueDate: "2025-07-06", category: "streaming"},
+    { name: "HBO Max", status: "Inactive", cycle: "Monthly", cost: 15.99, paymentStatus: "Unpaid", dueDate: "2025-04-18", category: "streaming" },
   ]);
 
   const [user, setUser] = useState<{ username: string } | null>(null);
