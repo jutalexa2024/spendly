@@ -74,7 +74,15 @@ const BillsPage: React.FC = () => {
     let dueStatus = "";
 
     try {
-      const parsed = new Date(dueDate);
+      console.log("Raw dueDate value:", dueDate);
+      let parsed: Date;
+
+      if (!isNaN(Number(dueDate))) {
+        parsed = new Date(Number(dueDate));
+      } else {
+        parsed = new Date(dueDate.replace(/-/g, "/"));
+      }
+
       if (!isNaN(parsed.getTime())) {
         const today = new Date();
         const diffTime = parsed.getTime() - today.getTime();
