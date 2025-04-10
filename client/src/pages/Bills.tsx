@@ -4,7 +4,10 @@ import "../styles/bills.css";
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_USER_BILLS } from "../utils/queries";
 import { ADD_BILL, DELETE_BILL } from "../utils/mutations";
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure, Button, Input, useToast } from "@chakra-ui/react";
+import {
+  Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter,
+  ModalBody, ModalCloseButton, useDisclosure, Button, Input, useToast
+} from "@chakra-ui/react";
 
 const BillsPage: React.FC = () => {
   const context = useContext(AppContext);
@@ -67,6 +70,38 @@ const BillsPage: React.FC = () => {
     }
   };
 
+  const getDueDetails = (dueDate: string | number) => {
+    let formattedDate = "Invalid Date";
+    let dueStatus = "";
+
+    try {
+      const parsed = new Date(Number(dueDate));
+      if (!isNaN(parsed.getTime())) {
+        const today = new Date();
+        const diffTime = parsed.getTime() - today.getTime();
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        formattedDate = parsed.toLocaleDateString("en-US", {
+          month: "2-digit",
+          day: "2-digit",
+          year: "numeric"
+        });
+
+        if (diffDays < 0) {
+          dueStatus = `Overdue by ${Math.abs(diffDays)} day(s)`;
+        } else if (diffDays === 0) {
+          dueStatus = "Due today";
+        } else {
+          dueStatus = `Due in ${diffDays} day(s)`;
+        }
+      }
+    } catch (err) {
+      console.error("Date parsing error:", err);
+    }
+
+    return { formattedDate, dueStatus };
+  };
+
   return (
     <div className="bills-page">
       <h1 className="page-title">My Bills</h1>
@@ -120,38 +155,15 @@ const BillsPage: React.FC = () => {
         {data?.userBills?.length > 0 ? (
           <div>
             {data.userBills.map((bill: any) => {
-            let formattedDate = "Invalid Date";
-            let dueStatus = "";
-            try {
-              const parsed = new Date(bill.dueDate);
-              if (!isNaN(parsed.getTime())) {
-                const today = new Date();
-                const diffTime = parsed.getTime() - today.getTime();
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                formattedDate = parsed.toLocaleDateString("en-US", {
-                  month: "2-digit",
-                  day: "2-digit",
-                  year: "numeric"
-                });
+              const { formattedDate, dueStatus } = getDueDetails(bill.dueDate);
 
-                if (diffDays < 0) {
-                  dueStatus = `Overdue by ${Math.abs(diffDays)} day(s)`;
-                } else if (diffDays === 0) {
-                  dueStatus = "Due today";
-                } else {
-                  dueStatus = `Due in ${diffDays} day(s)`;
-                }
-              }
-            } catch (err) {
-              console.error("Date parsing error:", err);
-            }
-
-            return (
+              return (
                 <div key={bill._id} className="subscriptions-row">
                   <span>{bill.name}</span>
                   <span>{bill.category}</span>
                   <span>${bill.amount.toFixed(2)}</span>
-                  <span>{formattedDate}</span><span style={{ fontStyle: 'italic', color: '#888' }}>{dueStatus}</span>
+                  <span>{formattedDate}</span>
+                  <span style={{ fontStyle: 'italic', color: '#888' }}>{dueStatus}</span>
                   <button onClick={() => handleDelete(bill._id)} className="delete-bill-btn">Delete</button>
                 </div>
               );
@@ -166,4 +178,5 @@ const BillsPage: React.FC = () => {
 };
 
 export default BillsPage;
+
 
