@@ -42,7 +42,7 @@ const BillsPage: React.FC = () => {
           name: newBill.name,
           category: newBill.category,
           amount: parseFloat(newBill.amount),
-          dueDate: newBill.dueDate
+          dueDate: new Date(newBill.dueDate).toISOString()
         }
       });
       refetch();
@@ -70,7 +70,7 @@ const BillsPage: React.FC = () => {
     <div className="bills-page">
       <h1 className="page-title">My Bills</h1>
 
-      <Button onClick={onOpen} colorScheme="blue" mb={4}>Add New Bill</Button>
+      <Button onClick={onOpen} className="chakra-button css-1qhwwba" mb={4}>Add New Bill</Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -108,7 +108,7 @@ const BillsPage: React.FC = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleAddBill}>Add Bill</Button>
+            <Button className="chakra-button css-1qhwwba" mr={3} onClick={handleAddBill}>Add Bill</Button>
             <Button onClick={onClose}>Cancel</Button>
           </ModalFooter>
         </ModalContent>
@@ -118,19 +118,25 @@ const BillsPage: React.FC = () => {
         <h2 className="subscriptions-card-title">Bills</h2>
         {data?.userBills?.length > 0 ? (
           <div>
-            {data.userBills.map((bill: any) => (
-              <div key={bill._id} className="subscriptions-row">
-                <span>{bill.name}</span>
-                <span>{bill.category}</span>
-                <span>${bill.amount.toFixed(2)}</span>
-                <span>{bill.dueDate ? new Date(bill.dueDate).toLocaleDateString("en-US", {
-                  month: "2-digit",
-                  day: "2-digit",
-                  year: "numeric"
-                }) : "Invalid Date"}</span>
-                <button onClick={() => handleDelete(bill._id)} className="chakra-button css-1qhwwba">Delete</button>
-              </div>
-            ))}
+            {data.userBills.map((bill: any) => {
+              const parsedDate = new Date(bill.dueDate);
+              const formattedDate = !isNaN(parsedDate.getTime())
+                ? parsedDate.toLocaleDateString("en-US", {
+                    month: "2-digit",
+                    day: "2-digit",
+                    year: "numeric"
+                  })
+                : "Invalid Date";
+              return (
+                <div key={bill._id} className="subscriptions-row">
+                  <span>{bill.name}</span>
+                  <span>{bill.category}</span>
+                  <span>${bill.amount.toFixed(2)}</span>
+                  <span>{formattedDate}</span>
+                  <button onClick={() => handleDelete(bill._id)} className="chakra-button css-1qhwwba">Delete</button>
+                </div>
+              );
+            })}
           </div>
         ) : (
           <p>No bills found.</p>
