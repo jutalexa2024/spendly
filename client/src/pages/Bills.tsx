@@ -120,23 +120,38 @@ const BillsPage: React.FC = () => {
         {data?.userBills?.length > 0 ? (
           <div>
             {data.userBills.map((bill: any) => {
-              let formattedDate = "Invalid Date";
-              if (bill.dueDate) {
-                const parsed = Date.parse(bill.dueDate);
-                if (!isNaN(parsed)) {
-                  formattedDate = new Date(parsed).toLocaleDateString("en-US", {
-                    month: "2-digit",
-                    day: "2-digit",
-                    year: "numeric"
-                  });
+            let formattedDate = "Invalid Date";
+            let dueStatus = "";
+            try {
+              const parsed = new Date(bill.dueDate);
+              if (!isNaN(parsed.getTime())) {
+                const today = new Date();
+                const diffTime = parsed.getTime() - today.getTime();
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                formattedDate = parsed.toLocaleDateString("en-US", {
+                  month: "2-digit",
+                  day: "2-digit",
+                  year: "numeric"
+                });
+
+                if (diffDays < 0) {
+                  dueStatus = `Overdue by ${Math.abs(diffDays)} day(s)`;
+                } else if (diffDays === 0) {
+                  dueStatus = "Due today";
+                } else {
+                  dueStatus = `Due in ${diffDays} day(s)`;
                 }
               }
-              return (
+            } catch (err) {
+              console.error("Date parsing error:", err);
+            }
+
+            return (
                 <div key={bill._id} className="subscriptions-row">
                   <span>{bill.name}</span>
                   <span>{bill.category}</span>
                   <span>${bill.amount.toFixed(2)}</span>
-                  <span>{formattedDate}</span>
+                  <span>{formattedDate}</span><span style={{ fontStyle: 'italic', color: '#888' }}>{dueStatus}</span>
                   <button onClick={() => handleDelete(bill._id)} className="delete-bill-btn">Delete</button>
                 </div>
               );
