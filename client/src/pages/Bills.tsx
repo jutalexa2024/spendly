@@ -36,13 +36,14 @@ const BillsPage: React.FC = () => {
     setFormError("");
 
     try {
+      const isoDate = new Date(newBill.dueDate + "T00:00:00").toISOString();
       await addBill({
         variables: {
           username: user.username,
           name: newBill.name,
           category: newBill.category,
           amount: parseFloat(newBill.amount),
-          dueDate: new Date(newBill.dueDate).toISOString()
+          dueDate: isoDate
         }
       });
       refetch();
@@ -70,7 +71,7 @@ const BillsPage: React.FC = () => {
     <div className="bills-page">
       <h1 className="page-title">My Bills</h1>
 
-      <Button onClick={onOpen} className="chakra-button css-1qhwwba" mb={4}>Add New Bill</Button>
+      <Button onClick={onOpen} colorScheme="blue" mb={4}>Add New Bill</Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -108,7 +109,7 @@ const BillsPage: React.FC = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button className="chakra-button css-1qhwwba" mr={3} onClick={handleAddBill}>Add Bill</Button>
+            <Button colorScheme="blue" mr={3} onClick={handleAddBill}>Add Bill</Button>
             <Button onClick={onClose}>Cancel</Button>
           </ModalFooter>
         </ModalContent>
@@ -119,21 +120,24 @@ const BillsPage: React.FC = () => {
         {data?.userBills?.length > 0 ? (
           <div>
             {data.userBills.map((bill: any) => {
-              const parsedDate = new Date(bill.dueDate);
-              const formattedDate = !isNaN(parsedDate.getTime())
-                ? parsedDate.toLocaleDateString("en-US", {
+              let formattedDate = "Invalid Date";
+              if (bill.dueDate) {
+                const parsed = Date.parse(bill.dueDate);
+                if (!isNaN(parsed)) {
+                  formattedDate = new Date(parsed).toLocaleDateString("en-US", {
                     month: "2-digit",
                     day: "2-digit",
                     year: "numeric"
-                  })
-                : "Invalid Date";
+                  });
+                }
+              }
               return (
                 <div key={bill._id} className="subscriptions-row">
                   <span>{bill.name}</span>
                   <span>{bill.category}</span>
                   <span>${bill.amount.toFixed(2)}</span>
                   <span>{formattedDate}</span>
-                  <button onClick={() => handleDelete(bill._id)} className="chakra-button css-1qhwwba">Delete</button>
+                  <button onClick={() => handleDelete(bill._id)} className="delete-bill-btn">Delete</button>
                 </div>
               );
             })}
@@ -147,3 +151,4 @@ const BillsPage: React.FC = () => {
 };
 
 export default BillsPage;
+
