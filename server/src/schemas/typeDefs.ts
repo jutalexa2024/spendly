@@ -2,7 +2,6 @@
 const typeDefs = `
   # Define which fields are accessible from the User model
   type User {
-    user_id: Int
     username: String
     email: String
   }
@@ -19,7 +18,6 @@ const typeDefs = `
 
   type Subscription {
     _id: ID!
-    user_id: ID
     username: String!
     name: String!
     status: String!

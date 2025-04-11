@@ -1,7 +1,6 @@
 import { Schema, model, Document } from 'mongoose';
 
 export interface ISubscription extends Document {
-  user_id: Schema.Types.ObjectId;
   username: string;
   name: string;
   status: string;
@@ -13,10 +12,6 @@ export interface ISubscription extends Document {
 
 const subscriptionSchema = new Schema<ISubscription>(
   {
-    user_id: {
-      type: Schema.Types.ObjectId,
-      ref: 'User'
-    },
     username: { 
       type: String, 
       required: true 

@@ -7,7 +7,6 @@ export interface IBill extends Document {
     category: string;
     amount: number;
     dueDate: String;
-    user_id: Schema.Types.ObjectId;
   }
   
 const billSchema = new Schema<IBill>(
@@ -34,11 +33,6 @@ const billSchema = new Schema<IBill>(
         type: String,
         required: true,
     },
-    user_id: {
-      type: Schema.Types.ObjectId,
-      ref: 'User'
-    }
-
   },
   {
     timestamps: true,
