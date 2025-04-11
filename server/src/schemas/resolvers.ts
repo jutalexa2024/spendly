@@ -11,6 +11,7 @@ interface AddUserArgs {
 }
 
 interface User {
+  _id:unknown;
   username: string;
   email: string;
   password: string;
@@ -34,9 +35,9 @@ interface AddSubscriptionArgs {
   renewalDate: string;
 }
 
-// interface Context {
-//   user?: User;
-// }
+interface Context {
+  user?: User;
+}
 
 
 interface SubscriptionInput {
@@ -71,12 +72,12 @@ const resolvers = {
     subscription: async (_parent: unknown, { id }: { id: string }) => {
       return await Subscription.findById(id);
     },
-    // me: async (_parent: unknown, _args: unknown, context: Context): Promise<User | null> => {
-    //   if (context.user) {
-    //     return await User.findOne({ _id: context.user.user_id });
-    //   }
-    //   throw new AuthenticationError('Not Authenticated');
-    // },
+    me: async (_parent: unknown, _args: unknown, context: Context): Promise<User | null> => {
+      if (context.user) {
+        return await User.findOne({ _id: context.user._id });
+      }
+      throw new AuthenticationError('Not Authenticated');
+    },
   },
 
   Mutation: {
