@@ -34,9 +34,9 @@ interface AddSubscriptionArgs {
   renewalDate: string;
 }
 
-interface Context {
-  user?: User;
-}
+// interface Context {
+//   user?: User;
+// }
 
 
 interface SubscriptionInput {
