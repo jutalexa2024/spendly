@@ -11,15 +11,14 @@ interface AddUserArgs {
 }
 
 interface User {
-  user_id: number;
   username: string;
   email: string;
   password: string;
 }
 
-interface UserArgs {
-  user_id: number;
-}
+// interface UserArgs {
+//   user_id: number;
+// }
 
 interface AddBillArgs {
   username: string;
@@ -53,9 +52,9 @@ const resolvers = {
   Query: {
     users: async () => await User.find(),
     bills: async () => await Bill.find(),
-    user: async (_parent: unknown, { user_id }: UserArgs): Promise<User | null> => {
-      return await User.findOne({ user_id: user_id });
-    },
+    // user: async (_parent: unknown, { user_id }: UserArgs): Promise<User | null> => {
+    //   return await User.findOne({ user_id: user_id });
+    // },
     subscriptions: async () => await Subscription.find(),
     
     userBills: async (_parent: unknown, { username }: { username: string }) => {
@@ -72,12 +71,12 @@ const resolvers = {
     subscription: async (_parent: unknown, { id }: { id: string }) => {
       return await Subscription.findById(id);
     },
-    me: async (_parent: unknown, _args: unknown, context: Context): Promise<User | null> => {
-      if (context.user) {
-        return await User.findOne({ _id: context.user.user_id });
-      }
-      throw new AuthenticationError('Not Authenticated');
-    },
+    // me: async (_parent: unknown, _args: unknown, context: Context): Promise<User | null> => {
+    //   if (context.user) {
+    //     return await User.findOne({ _id: context.user.user_id });
+    //   }
+    //   throw new AuthenticationError('Not Authenticated');
+    // },
   },
 
   Mutation: {

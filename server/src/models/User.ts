@@ -5,7 +5,6 @@ import bcrypt from 'bcryptjs';
 
 
 export interface IUser extends Document {
-  user_id: number;
   username: string;
   email: string;
   password: string;

@@ -13,7 +13,6 @@ const typeDefs = `
     category: String
     amount: Float
     dueDate: String
-    user_id: ID
   }
 
   type Subscription {
