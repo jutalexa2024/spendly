@@ -99,7 +99,6 @@ export const ADD_USER = gql`
     addUser(input: $input) {
       token
       user {
-        user_id
         username
         email
       }
@@ -114,7 +113,6 @@ export const LOGIN = gql`
     login(email: $email, password: $password) {
       token
       user {
-        user_id
         username
         email
       }

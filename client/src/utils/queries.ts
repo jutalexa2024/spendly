@@ -27,7 +27,6 @@ export const GET_BILL_BY_ID = gql`
 export const GET_SUBSCRIPTIONS = gql`
   query GetSubscriptions {
     subscriptions {
-      user_id
       name
       amount
       startDate
